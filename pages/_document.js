@@ -4,6 +4,7 @@ export default function Document() {
     return (
         <Html>
             <Head>
+                <meta name="google-site-verification" content="d9h0wAMpo4KhnrihbaQ5mfgRPtYxli482bq4Pkfn63k" />
                 <meta name="description" content="Website to watch FPL live matches and twitch streams" />
                 <link rel="icon" href="/favicon.ico" />
                 <link rel="preconnect" href="https://fonts.googleapis.com"></link>

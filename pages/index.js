@@ -262,14 +262,15 @@ export default function Home() {
       </main>
       <footer className={styles.footer}>
         <a
-          className="font-base"
-          href="https://twitter.com/crazynnconrad"
+          className="font-base max-w-fit"
+          href="https://github.com/Conrage"
           target="_blank"
           rel="noopener noreferrer"
         >
           Powered by{" "}
           <span className="ml-1 font-semibold text-blue-500">Crazynn</span>
         </a>
+        <a target="blank" className="font-base p-2 max-w-fit h-fit rounded-lg bg-white" href="https://github.com/Conrage/watch-fpl"><img className="h-6" src="/github.png"></img></a>
       </footer>
     </div>
   );
