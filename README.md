@@ -6,7 +6,7 @@
 
 ## Ou você pode baixar e rodar na sua máquina
 
-#### Install dependencies for both socket-server and tictactoe client
+#### Instale as dependencias do projeto e rode
 
 `npm install`
 `npm run start`
