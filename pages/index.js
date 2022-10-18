@@ -157,7 +157,7 @@ export default function Home() {
                   <li key={player.nickname}>
                     <a
                       href={`https://www.faceit.com/pt/players/${player.nickname}`}
-                      target="_blank"
+                      target="blank"
                       className="p-2 font-red-hat font-semibold text-gray-300"
                     >
                       {player.nickname}
