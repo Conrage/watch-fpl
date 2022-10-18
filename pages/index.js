@@ -73,7 +73,7 @@ export default function Home() {
         <div className="w-full gap-8 items-center flex flex-col">
           {matches.map((match) => {
             return (
-              <div className="p-4 px-8 pb-8 rounded-2xl max-w-4xl w-full bg-card border-orange-600">
+              <div key={match.id} className="p-4 px-8 pb-8 rounded-2xl max-w-4xl w-full bg-card border-orange-600">
                 <div className="flex justify-center mb-8 w-full gap-8">
                   <h2 className="mr-auto flex items-center font-red-hat text-2xl gap-2 text-white font-medium">
                     {match.teams.faction1.name}
@@ -102,7 +102,7 @@ export default function Home() {
                   <div className="flex flex-col gap-4">
                     {match.teams.faction1.roster.map((player) => {
                       return (
-                        <div className="flex gap-2 items-center">
+                        <div key={player.id} className="flex gap-2 items-center">
                           <div class="avatar">
                             <div class="w-8 h-fit rounded-full">
                               <img src={player.avatar} />
@@ -134,7 +134,7 @@ export default function Home() {
                   <div className="flex flex-col gap-4 items-end">
                     {match.teams.faction2.roster.map((player) => {
                       return (
-                        <div className="flex gap-2 items-center">
+                        <div key={player.id} className="flex gap-2 items-center">
                           <div className="flex flex-col font-play text-gray-400 font-bold text-base">
                             {player.nickname}
                             {verifyStream(player) ? (
