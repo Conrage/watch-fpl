@@ -342,7 +342,7 @@ export default function Home() {
         <a
           className="font-base max-w-fit"
           href="https://github.com/Conrage"
-          target="_blank"
+          target="blank"
           rel="noopener noreferrer"
         >
           Powered by{" "}
