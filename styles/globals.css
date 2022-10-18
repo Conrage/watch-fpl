@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap");
 html,
 body {
   padding: 0;
@@ -18,30 +18,32 @@ a {
 * {
   box-sizing: border-box;
 }
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background-image: radial-gradient(rgba(120, 125, 134, 0.2) 0.5px,rgb(30, 34, 43) 0.5px);
-    background-size: 5px 5px;
-  }
-  .bg-card {
-    background-color: rgb(27, 30, 37);
-  }
+html {
+  color-scheme: dark;
+}
+body {
+  background-color: rgb(30, 34, 43);
+  color: white;
+  background-image: radial-gradient(
+    rgba(120, 125, 134, 0.2) 0.5px,
+    rgb(30, 34, 43) 0.5px
+  );
+  background-size: 5px 5px;
+}
+.bg-card {
+  background-color: rgb(27, 30, 37);
 }
 
-@media (max-width:641px)  {
-  *{
+@media (max-width: 641px) {
+  * {
     font-size: 99% !important;
   }
-  .card-body{
+  .card-body {
     padding: 1rem;
   }
   .score {
-    padding: 0.10rem 0.7rem 0.1rem 0.7rem;
-    gap: .5rem;
+    padding: 0.1rem 0.7rem 0.1rem 0.7rem;
+    gap: 0.5rem;
   }
 }
 .card-body {
@@ -54,6 +56,10 @@ a {
 .card-bg figure img {
   width: 100%;
   height: 100%;
-  mask-image: linear-gradient(to bottom, rgba(42, 48, 60, 0.05) -40%, rgba(42, 48, 60,0) 100%);
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(42, 48, 60, 0.05) -40%,
+    rgba(42, 48, 60, 0) 100%
+  );
   background-size: cover;
 }
