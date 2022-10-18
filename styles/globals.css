@@ -63,3 +63,26 @@ body {
   );
   background-size: cover;
 }
+
+.map-card {
+  position: relative;
+}
+.map-card figure {
+  z-index: 0;
+}
+.map-card figure img {
+  width: 100%;
+  height: 100%;
+  left: 0;
+  z-index: -1;
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(42, 48, 60, 0.4) 100%,
+    rgba(42, 48, 60, 0.4) 100%
+  );
+  position: absolute;
+  object-fit: cover;
+}
+.map-card-body {
+  z-index: 1;
+}
