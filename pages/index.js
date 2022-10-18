@@ -113,6 +113,7 @@ export default function Home() {
                             {verifyStream(player) ? (
                               <a
                                 className="flex items-center"
+                                target="blank"
                                 href={verifyStream(player).stream.channel_url}
                               >
                                 <img
@@ -140,6 +141,7 @@ export default function Home() {
                             {verifyStream(player) ? (
                               <a
                                 className="flex items-center"
+                                target="blank"
                                 href={verifyStream(player).stream.channel_url}
                               >
                                 <img
