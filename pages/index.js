@@ -7,15 +7,16 @@ import axios from "axios";
 export default function Home() {
   const [streamers, setStreamers] = useState([]);
   const [matches, setMatches] = useState([]);
+  const [entityId, setEntityId] = useState('ef607668-a51a-4ea6-8b7b-dab07e0ab151');
 
   const getStreamers = () => {
-    axios.get("/api/streamers").then((res) => {
+    axios.get(`/api/streamers/${entityId}`).then((res) => {
       setStreamers(res.data.results);
     });
   };
 
   const getMatches = () => {
-    axios.get("/api/matches/all").then((res) => {
+    axios.get(`/api/matches/${entityId}`).then((res) => {
       setMatches(res.data.payload);
     });
   };
@@ -40,7 +41,7 @@ export default function Home() {
   useEffect(() => {
     getMatches();
     getStreamers();
-  }, []);
+  }, [entityId]);
 
   return (
     <div className={styles.container}>
@@ -64,9 +65,13 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className="text-4xl font-play font-bold mb-2">
+        <select onChange={e =>setEntityId(e.target.value)} className="text-4xl font-play font-bold mb-2 text-center select select-ghost w-fit">
+          <option className="text-base font-play font-bold" value="ef607668-a51a-4ea6-8b7b-dab07e0ab151" selected>FPL CSGO South America</option>
+          <option className="text-base font-play font-bold" value="81752520-7bad-42a7-a70d-d43fd66011de">FPL C CSGO South America</option>
+        </select>
+        {/* <h1 className="text-4xl font-play font-bold mb-2">
           FPL CSGO South America
-        </h1>
+        </h1> */}
         <div className="badge badge-accent font-bold font-play bg-orange-600 border-orange-600 mb-8">
           LIVE MATCHES
         </div>
@@ -103,8 +108,8 @@ export default function Home() {
                     {match.teams.faction1.roster.map((player) => {
                       return (
                         <div key={player.id} className="flex gap-2 items-center">
-                          <div class="avatar">
-                            <div class="w-8 h-fit rounded-full">
+                          <div className="avatar">
+                            <div className="w-8 h-fit rounded-full">
                               <img src={player.avatar} />
                             </div>
                           </div>
@@ -156,8 +161,8 @@ export default function Home() {
                               ""
                             )}
                           </div>
-                          <div class="avatar">
-                            <div class="w-8 h-fit rounded-full">
+                          <div className="avatar">
+                            <div className="w-8 h-fit rounded-full">
                               <img src={player.avatar}/>
                             </div>
                           </div>
