@@ -7,6 +7,6 @@ export default function handler(req, res) {
       `https://api.faceit.com/match/v2/match?entityType=hub&entityId=${id}&state=SUBSTITUTION,CAPTAIN_PICK,VOTING,CONFIGURING,READY,ONGOING,MANUAL_RESULT,PAUSED,ABORTED&limit=20&offset=0`
     )
     .then((response) => {
-      res.status(200).json(response.data);
+      res.status(200).json(response.data || []);
     });
 }
