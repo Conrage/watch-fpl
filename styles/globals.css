@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap');
 html,
 body {
   padding: 0;
@@ -14,13 +18,17 @@ a {
 * {
   box-sizing: border-box;
 }
-
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
   body {
     color: white;
-    background: black;
+    background-image: radial-gradient(hsla(220 13% 69%/.2) 0.5px,hsla(220 17% 17%/1) 0.5px);
+    background-size: 5px 5px;
+  }
+  .bg-card {
+    background-color: #2A303C;
   }
 }
+
