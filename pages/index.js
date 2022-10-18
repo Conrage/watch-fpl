@@ -136,7 +136,7 @@ export default function Home() {
                     {match.teams.faction2.roster.map((player) => {
                       return (
                         <div key={player.id} className="flex gap-2 items-center">
-                          <div className="flex flex-col font-play text-gray-400 font-bold text-base">
+                          <div className="flex flex-col font-play items-end text-gray-400 font-bold text-base">
                             {player.nickname}
                             {verifyStream(player) ? (
                               <a
