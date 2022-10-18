@@ -18,7 +18,7 @@ export default function Home() {
 
   const [streamers, setStreamers] = useState([]);
   const [matches, setMatches] = useState([]);
-  const [entityId, setEntityId] = useState(getFromStorage("hub_selected"));
+  const [entityId, setEntityId] = useState(getFromStorage("hub_selected") || 'ef607668-a51a-4ea6-8b7b-dab07e0ab151');
 
   const handleSelectHub = (hub) => {
     setToStorage("hub_selected", hub);
@@ -54,6 +54,7 @@ export default function Home() {
 
     return "stat-value text-red-500 font-semibold text-4xl";
   };
+
   useEffect(() => {
     getMatches();
     getStreamers();
@@ -67,7 +68,7 @@ export default function Home() {
       <main className={styles.main}>
         <select
           onChange={(e) => handleSelectHub(e.target.value)}
-          value={getFromStorage("hub_selected")}
+          value={getFromStorage("hub_selected") || 'ef607668-a51a-4ea6-8b7b-dab07e0ab151'}
           className="text-4xl font-play font-bold mb-2 text-center select select-ghost w-fit"
         >
           <option
@@ -215,7 +216,7 @@ export default function Home() {
                             key={player.id}
                             className="flex p-1 h-10 gap-2 items-center"
                           >
-                            <div className="flex flex-col font-play items-end font-medium text-gray-400 font-bold text-base">
+                            <div className="flex flex-col font-play items-end font-medium text-gray-400 text-base">
                               {player.nickname}
                               {verifyStream(player) ? (
                                 <a
@@ -259,7 +260,6 @@ export default function Home() {
           })}
         </div>
       </main>
-
       <footer className={styles.footer}>
         <a
           className="font-base"
