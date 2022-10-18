@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 import axios from "axios";
@@ -62,6 +61,9 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
+      <Head>
+        <title>FPL Live Matches</title>
+      </Head>
       <main className={styles.main}>
         <select
           onChange={(e) => handleSelectHub(e.target.value)}
@@ -265,7 +267,8 @@ export default function Home() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by <span className="ml-1 font-semibold text-blue-500">Crazynn</span>
+          Powered by{" "}
+          <span className="ml-1 font-semibold text-blue-500">Crazynn</span>
         </a>
       </footer>
     </div>

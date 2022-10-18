@@ -4,7 +4,6 @@ export default function Document() {
     return (
         <Html>
             <Head>
-                <title>FPL Live Matches</title>
                 <meta name="description" content="Website to watch FPL live matches and twitch streams" />
                 <link rel="icon" href="/favicon.ico" />
                 <link rel="preconnect" href="https://fonts.googleapis.com"></link>
