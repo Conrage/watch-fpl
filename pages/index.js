@@ -52,7 +52,6 @@ export default function Home() {
   const [queue, setQueue] = useState([]);
   const [matches, setMatches] = useState([]);
   const [ranking, setRanking] = useState({});
-  const [prizes, setPrizes] = useState({});
   const [entity, setEntity] = useState(
     translateId[getFromStorage("hub_selected")] || translateId.SA
   );
@@ -62,14 +61,8 @@ export default function Home() {
     setEntity(translateId[hub]);
   };
 
-  const getPrizes = () => {
-    axios.get(`/api/rankings/prizes/${entity.leaderboard_id}`).then((res) => {
-      setPrizes(res.data.payload);
-    });
-  };
-
   const getRanking = () => {
-    axios.get(`/api/rankings/${entity.hub_id}`).then((res) => {
+    axios.get(`/api/rankings/${entity.hub_id}?leaderboard_id=${entity.leaderboard_id}`).then((res) => {
       setRanking(res.data.payload);
     });
   };
@@ -121,7 +114,6 @@ export default function Home() {
     getStreamers();
     getQueues();
     getRanking();
-    getPrizes();
   };
 
   const verifyResult = (score1, score2) => {
@@ -278,12 +270,12 @@ export default function Home() {
                           </div>
                         </td>
                         <th>
-                          {prizes.leaderboard?.prizes[player.position - 1]
+                          {ranking.leaderboard?.prizes[player.position - 1]
                             ?.image_url ? (
                             <img
                               className="h-6 min-w-fit"
                               src={
-                                prizes.leaderboard?.prizes[player.position - 1]
+                                ranking.leaderboard?.prizes[player.position - 1]
                                   ?.image_url
                               }
                             ></img>
@@ -293,7 +285,7 @@ export default function Home() {
                                 F
                               </span>
                               {
-                                prizes.leaderboard?.prizes[player.position - 1]
+                                ranking.leaderboard?.prizes[player.position - 1]
                                   ?.faceit_points
                               }
                             </div>
@@ -581,12 +573,12 @@ export default function Home() {
                             </div>
                           </td>
                           <th>
-                            {prizes.leaderboard?.prizes[player.position - 1]
+                            {ranking.leaderboard?.prizes[player.position - 1]
                               ?.image_url ? (
                               <img
                                 className="h-6 min-w-fit"
                                 src={
-                                  prizes.leaderboard?.prizes[
+                                  ranking.leaderboard?.prizes[
                                     player.position - 1
                                   ]?.image_url
                                 }
@@ -597,7 +589,7 @@ export default function Home() {
                                   F
                                 </span>
                                 {
-                                  prizes.leaderboard?.prizes[
+                                  ranking.leaderboard?.prizes[
                                     player.position - 1
                                   ]?.faceit_points
                                 }
