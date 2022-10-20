@@ -105,6 +105,12 @@ export default function Home() {
       return map.class_name == pick;
     })[0];
     if (!map) {
+      if (!allMaps)
+        return {
+          class_name: "Picking map",
+          image_lg:
+            "https://quoramarketing.com/wp-content/uploads/2022/09/CSGO-All-Maps-in-Competitive-Pool-Active-Duty.jpg",
+        };
       return allMaps[0];
     }
     return map;
@@ -130,10 +136,6 @@ export default function Home() {
 
   useEffect(() => {
     updateStats();
-    setTimeout(
-      setEntity(translateId[getFromStorage("hub_selected")] || translateId.SA),
-      10000
-    );
   }, [entity.hub_id, entity.queue_id]);
 
   return (
