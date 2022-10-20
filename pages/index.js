@@ -52,7 +52,6 @@ export default function Home() {
   const [queue, setQueue] = useState([]);
   const [matches, setMatches] = useState([]);
   const [ranking, setRanking] = useState({});
-  const [prizes, setPrizes] = useState({});
   const [entity, setEntity] = useState(
     translateId[getFromStorage("hub_selected")] || translateId.SA
   );
@@ -62,16 +61,14 @@ export default function Home() {
     setEntity(translateId[hub]);
   };
 
-  const getPrizes = () => {
-    axios.get(`/api/rankings/prizes/${entity.leaderboard_id}`).then((res) => {
-      setPrizes(res.data.payload);
-    });
-  };
-
   const getRanking = () => {
-    axios.get(`/api/rankings/${entity.hub_id}`).then((res) => {
-      setRanking(res.data.payload);
-    });
+    axios
+      .get(
+        `/api/rankings/${entity.hub_id}?leaderboard_id=${entity.leaderboard_id}`
+      )
+      .then((res) => {
+        setRanking(res.data.payload);
+      });
   };
 
   const getQueues = () => {
@@ -121,7 +118,18 @@ export default function Home() {
     getStreamers();
     getQueues();
     getRanking();
-    getPrizes();
+  };
+
+  const formatDate = (date) => {
+    if(!date) return '';
+    var today = new Date(date); // yyyy-mm-dd
+
+    var month = today
+      .toLocaleString("default", { month: "short" })
+      .replace(".", "");
+    month = month.charAt(0).toUpperCase() + month.slice(1);
+    var day = today.getDate();
+    return month + " " + day;
   };
 
   const verifyResult = (score1, score2) => {
@@ -210,7 +218,10 @@ export default function Home() {
         <div className="content w-full grid gap-4 grid-cols-8 grid-rows-3">
           <div className="ranking max-w-fit col-start-1 col-end-3">
             <div className="text-2xl font-play font-bold mb-4 w-fit">
-              Ranking
+              Ranking{" "}
+              <span className="ml-4 stat-desc text-lg font-medium">{` ${formatDate(
+                ranking.leaderboard?.start_date
+              )} - ${formatDate(ranking.leaderboard?.end_date)}`}</span>
             </div>
             <div className="overflow-x-auto w-full">
               <table className="table w-full">
@@ -278,12 +289,12 @@ export default function Home() {
                           </div>
                         </td>
                         <th>
-                          {prizes.leaderboard?.prizes[player.position - 1]
+                          {ranking.leaderboard?.prizes[player.position - 1]
                             ?.image_url ? (
                             <img
                               className="h-6 min-w-fit"
                               src={
-                                prizes.leaderboard?.prizes[player.position - 1]
+                                ranking.leaderboard?.prizes[player.position - 1]
                                   ?.image_url
                               }
                             ></img>
@@ -293,7 +304,7 @@ export default function Home() {
                                 F
                               </span>
                               {
-                                prizes.leaderboard?.prizes[player.position - 1]
+                                ranking.leaderboard?.prizes[player.position - 1]
                                   ?.faceit_points
                               }
                             </div>
@@ -512,7 +523,10 @@ export default function Home() {
             </label>
             <div>
               <div className="text-2xl font-play font-bold mb-4 w-fit">
-                Ranking
+                Ranking{" "}
+                <span className="ml-4 stat-desc text-lg font-medium">{` ${formatDate(
+                  ranking.leaderboard?.start_date
+                )} - ${formatDate(ranking.leaderboard?.end_date)}`}</span>
               </div>
               <div className="overflow-x-auto w-full">
                 <table className="table w-full">
@@ -581,12 +595,12 @@ export default function Home() {
                             </div>
                           </td>
                           <th>
-                            {prizes.leaderboard?.prizes[player.position - 1]
+                            {ranking.leaderboard?.prizes[player.position - 1]
                               ?.image_url ? (
                               <img
                                 className="h-6 min-w-fit"
                                 src={
-                                  prizes.leaderboard?.prizes[
+                                  ranking.leaderboard?.prizes[
                                     player.position - 1
                                   ]?.image_url
                                 }
@@ -597,7 +611,7 @@ export default function Home() {
                                   F
                                 </span>
                                 {
-                                  prizes.leaderboard?.prizes[
+                                  ranking.leaderboard?.prizes[
                                     player.position - 1
                                   ]?.faceit_points
                                 }
