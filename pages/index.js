@@ -100,11 +100,13 @@ export default function Home() {
     return playerStreaming[0];
   };
 
-  const getMap = (maps, pick) => {
+  const getMap = (maps, pick, allMaps) => {
     const map = maps?.filter((map) => {
       return map.class_name == pick;
     })[0];
-
+    if (!map) {
+      return allMaps[0];
+    }
     return map;
   };
 
@@ -140,7 +142,7 @@ export default function Home() {
         <title>FPL Live Matches</title>
       </Head>
       <main className={styles.main}>
-        <div className="flex">
+        <div className="flex gap-2">
           <select
             onChange={(e) => handleSelectHub(e.target.value)}
             value={
@@ -363,16 +365,29 @@ export default function Home() {
                               src={
                                 getMap(
                                   match.voting?.map.entities,
-                                  match.voting?.map.pick
+                                  match.voting?.map.pick,
+                                  match.maps
                                 )?.image_lg
                               }
                               className="rounded-lg"
-                              alt={match.voting?.map.pick}
+                              alt={
+                                getMap(
+                                  match.voting?.map.entities,
+                                  match.voting?.map.pick,
+                                  match.maps
+                                )?.class_name
+                              }
                             />
                           </figure>
                           <div className="map-card-body h-8 flex items-center justify-center">
                             <h2 className="text-gray-200 font-play text-base mx-auto">
-                              {match.voting?.map.pick}
+                              {
+                                getMap(
+                                  match.voting?.map.entities,
+                                  match.voting?.map.pick,
+                                  match.maps
+                                )?.class_name
+                              }
                             </h2>
                           </div>
                         </div>
