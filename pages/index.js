@@ -20,31 +20,38 @@ export default function Home() {
     SA: {
       hub_id: "ef607668-a51a-4ea6-8b7b-dab07e0ab151",
       queue_id: "633f0132403c133d88b9832b",
+      leaderboard_id: '6346d436feeb182ac0852df8',
     },
     CSA: {
       hub_id: "81752520-7bad-42a7-a70d-d43fd66011de",
       queue_id: "6340418ad7689d5091584220",
+      leaderboard_id: '634967c64c180a16e15ded04',
     },
     NA: {
       hub_id: "748cf78c-be73-4eb9-b131-21552f2f8b75",
       queue_id: "5ec3276bf69bec00070a854b",
+      leaderboard_id: '6337427bf6d76e5b1c191fb5',
     },
     CNA: {
       hub_id: "b6895a52-a70c-41d6-b096-7d05377720c4",
       queue_id: "5aa05432f4ae3d0007e9e0c8",
+      leaderboard_id: '633741aff6d76e5b1c1911e6',
     },
     EU: {
       hub_id: "74caad23-077b-4ef3-8b1d-c6a2254dfa75",
       queue_id: "5a200f64aa4cb20006161700",
+      leaderboard_id: '6335bf42bb87d174a4d9bbf8',
     },
     CEU: {
       hub_id: "fd5780d5-dd2f-4479-906c-57b8e41ae9d7",
       queue_id: "5a200f62aa4cb200061616fe",
+      leaderboard_id: '6335c033f6d76e5b1c0ae062',
     },
   };
   const [streamers, setStreamers] = useState([]);
   const [queue, setQueue] = useState([]);
   const [matches, setMatches] = useState([]);
+  const [ranking, setRanking] = useState({});
   const [entity, setEntity] = useState(
     translateId[getFromStorage("hub_selected")] || translateId.SA
   );
@@ -52,6 +59,18 @@ export default function Home() {
   const handleSelectHub = (hub) => {
     setToStorage("hub_selected", hub);
     setEntity(translateId[hub]);
+  };
+
+  const getPrizes = () => {
+    axios.get(`/api/rankings/prizes/${entity.leaderboard_id}`).then((res) => {
+      setRanking(res.data.payload);
+    });
+  };
+
+  const getRanking = () => {
+    axios.get(`/api/rankings/${entity.hub_id}`).then((res) => {
+      setRanking(res.data.payload);
+    });
   };
 
   const getQueues = () => {
@@ -88,6 +107,14 @@ export default function Home() {
     return map;
   };
 
+  const updateStats = () => {
+    getMatches();
+    getStreamers();
+    getQueues();
+    getRanking();
+    getPrizes();
+  };
+
   const verifyResult = (score1, score2) => {
     if (score1 == score2) {
       return "stat-value text-gray-400 font-semibold text-4xl";
@@ -99,9 +126,8 @@ export default function Home() {
   };
 
   useEffect(() => {
-    getMatches();
-    getStreamers();
-    getQueues();
+    updateStats();
+    setTimeout(updateStats, 60000);
   }, [entity.hub_id, entity.queue_id]);
 
   return (
@@ -168,174 +194,256 @@ export default function Home() {
             </ul>
           </div>
         </div>
-        <div className="w-full gap-8 items-center flex flex-col">
-          {matches.map((match) => {
-            return (
-              <div
-                key={match.id}
-                className="card rounded-lg max-w-4xl w-full bg-card"
-              >
-                <div className="card-bg flex absolute w-full h-full">
-                  <figure>
-                    <img
-                      src={match.teams.faction1.avatar}
-                      alt={match.teams.faction1.name}
-                    />
-                  </figure>
-                  <figure>
-                    <img
-                      src={match.teams.faction2.avatar}
-                      alt={match.teams.faction2.name}
-                    />
-                  </figure>
-                </div>
-                <div className="p-4 px-8 pb-8 card-body">
-                  <div className="relative">
-                    <div className="flex justify-center mb-4 w-full gap-8">
-                      <h2 className="w-1/2 mr-auto flex items-center font-red-hat text-2xl gap-2 text-white font-medium">
-                        {match.teams.faction1.name}
-                      </h2>
-                      <div className="score flex gap-2 pt-1 pb-2 px-4 rounded-lg font-semibold text-3xl align-middle">
-                        <div
-                          className={verifyResult(
-                            match.summaryResults?.factions.faction1.score,
-                            match.summaryResults?.factions.faction2.score
-                          )}
-                        >
-                          {match.summaryResults?.factions.faction1.score < 10
-                            ? `0${match.summaryResults?.factions.faction1.score}`
-                            : match.summaryResults?.factions.faction1.score}
-                        </div>
-                        :
-                        <div
-                          className={verifyResult(
-                            match.summaryResults?.factions.faction2.score,
-                            match.summaryResults?.factions.faction1.score
-                          )}
-                        >
-                          {match.summaryResults?.factions.faction2.score < 10
-                            ? `0${match.summaryResults?.factions.faction2.score}`
-                            : match.summaryResults?.factions.faction2.score}
-                        </div>
-                      </div>
-                      <h2 className="w-1/2 ml-auto justify-end flex text-2xl font-red-hat items-center gap-2 text-white font-medium">
-                        {match.teams.faction2.name}
-                      </h2>
-                    </div>
-                    <div className="w-full h-fit flex justify-center">
-                      <div className="map-card h-fit p-1 rounded-lg flex items-center justify-center w-52 image-full">
-                        <figure>
-                          <img
-                            src={
-                              getMap(
-                                match.voting?.map.entities,
-                                match.voting?.map.pick
-                              )?.image_lg
-                            }
-                            className="rounded-lg"
-                            alt={match.voting?.map.pick}
-                          />
-                        </figure>
-                        <div className="map-card-body h-8 flex items-center justify-center">
-                          <h2 className="text-gray-200 font-play text-base mx-auto">{match.voting?.map.pick}</h2>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between">
-                    <div className="flex flex-col gap-4">
-                      {match.teams.faction1.roster.map((player) => {
-                        return (
-                          <div
-                            key={player.id}
-                            className="flex h-10 gap-2 items-center"
-                          >
+        <div className="flex">
+          {/* <div>
+            <div className="text-2xl font-play font-bold mb-4 w-fit">
+              Ranking
+            </div>
+            <div className="overflow-x-auto w-full">
+              <table className="table w-full">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Prize</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ranking.rankings?.map((player) => {
+                    return (
+                      <tr>
+                        <td>{player.position}</td>
+                        <td>
+                          <div className="flex items-center space-x-3">
                             <div className="avatar">
                               <div
                                 className={
                                   verifyStream(player)
-                                    ? "w-8 h-fit rounded-full border-purple-500 border-2"
-                                    : "w-8 border-2 border-white h-fit rounded-full"
+                                    ? "mask mask-squircle w-8 h-8 rounded-full border-purple-500 border-2"
+                                    : "mask mask-squircle w-8 h-8 rounded-full"
                                 }
                               >
-                                <img src={player.avatar} />
+                                <img
+                                  src={player.placement.entity_avatar}
+                                  alt="Player image"
+                                />
                               </div>
                             </div>
-                            <div className="flex flex-col font-play text-gray-400 font-medium text-base">
-                              {player.nickname}
+                            <div>
+                              <div className="font-medium font-play text-sm">
+                                {player.placement.entity_name}
+                              </div>
                               {verifyStream(player) ? (
-                                <a
-                                  className="flex items-center"
-                                  target="blank"
-                                  href={verifyStream(player).stream.channel_url}
-                                >
-                                  <span className="flex gap-2 font-medium text-purple-500 hover:font-bold">
-                                    {verifyStream(player).stream.channel_name}
-                                    <div className="mb-auto gap-1 text-red-500 font-medium flex items-center">
-                                      <span className="text-red-500 text-base font-bold material-symbols-outlined">
-                                        person
-                                      </span>
-                                      {verifyStream(player).stream.viewers}
-                                    </div>
-                                  </span>
-                                </a>
-                              ) : (
-                                ""
-                              )}
+                                  <a
+                                    className="flex items-center"
+                                    target="blank"
+                                    href={
+                                      verifyStream(player).stream.channel_url
+                                    }
+                                  >
+                                    <span className="flex gap-2 font-medium text-purple-500 hover:font-bold">
+                                      {verifyStream(player).stream.channel_name}
+                                      <div className="mb-auto gap-1 text-red-500 font-medium flex items-center">
+                                        <span className="text-red-500 text-base font-bold material-symbols-outlined">
+                                          person
+                                        </span>
+                                        {verifyStream(player).stream.viewers}
+                                      </div>
+                                    </span>
+                                  </a>
+                                ) : (
+                                  ""
+                                )}
                             </div>
                           </div>
-                        );
-                      })}
-                    </div>
-                    <div className="flex flex-col gap-4 items-end">
-                      {match.teams.faction2.roster.map((player) => {
-                        return (
+                        </td>
+                        <th>
+                          <button className="btn btn-ghost btn-xs">
+                            details
+                          </button>
+                        </th>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div> */}
+          <div className="w-full gap-8 items-center flex flex-col">
+            {matches.map((match) => {
+              return (
+                <div
+                  key={match.id}
+                  className="card rounded-lg max-w-4xl w-full bg-card"
+                >
+                  <div className="card-bg flex absolute w-full h-full">
+                    <figure>
+                      <img
+                        src={match.teams.faction1.avatar}
+                        alt={match.teams.faction1.name}
+                      />
+                    </figure>
+                    <figure>
+                      <img
+                        src={match.teams.faction2.avatar}
+                        alt={match.teams.faction2.name}
+                      />
+                    </figure>
+                  </div>
+                  <div className="p-4 px-8 pb-8 card-body">
+                    <div className="relative">
+                      <div className="flex justify-center mb-4 w-full gap-8">
+                        <h2 className="w-1/2 mr-auto flex items-center font-red-hat text-2xl gap-2 text-white font-medium">
+                          {match.teams.faction1.name}
+                        </h2>
+                        <div className="score flex gap-2 pt-1 pb-2 px-4 rounded-lg font-semibold text-3xl align-middle">
                           <div
-                            key={player.id}
-                            className="flex p-1 h-10 gap-2 items-center"
+                            className={verifyResult(
+                              match.summaryResults?.factions?.faction1.score,
+                              match.summaryResults?.factions?.faction2.score
+                            )}
                           >
-                            <div className="flex flex-col font-play items-end font-medium text-gray-400 text-base">
-                              {player.nickname}
-                              {verifyStream(player) ? (
-                                <a
-                                  className="flex items-center"
-                                  target="blank"
-                                  href={verifyStream(player).stream.channel_url}
+                            {match.summaryResults?.factions?.faction1.score < 10
+                              ? `0${match.summaryResults?.factions?.faction1.score}`
+                              : match.summaryResults?.factions?.faction1.score}
+                          </div>
+                          :
+                          <div
+                            className={verifyResult(
+                              match.summaryResults?.factions?.faction2.score,
+                              match.summaryResults?.factions?.faction1.score
+                            )}
+                          >
+                            {match.summaryResults?.factions?.faction2.score < 10
+                              ? `0${match.summaryResults?.factions?.faction2.score}`
+                              : match.summaryResults?.factions?.faction2.score}
+                          </div>
+                        </div>
+                        <h2 className="w-1/2 ml-auto justify-end flex text-2xl font-red-hat items-center gap-2 text-white font-medium">
+                          {match.teams.faction2.name}
+                        </h2>
+                      </div>
+                      <div className="w-full h-fit flex justify-center">
+                        <div className="map-card h-fit p-1 rounded-lg flex items-center justify-center w-52 image-full">
+                          <figure>
+                            <img
+                              src={
+                                getMap(
+                                  match.voting?.map.entities,
+                                  match.voting?.map.pick
+                                )?.image_lg
+                              }
+                              className="rounded-lg"
+                              alt={match.voting?.map.pick}
+                            />
+                          </figure>
+                          <div className="map-card-body h-8 flex items-center justify-center">
+                            <h2 className="text-gray-200 font-play text-base mx-auto">
+                              {match.voting?.map.pick}
+                            </h2>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex justify-between">
+                      <div className="flex flex-col gap-4">
+                        {match.teams.faction1.roster.map((player) => {
+                          return (
+                            <div
+                              key={player.id}
+                              className="flex h-10 gap-2 items-center"
+                            >
+                              <div className="avatar">
+                                <div
+                                  className={
+                                    verifyStream(player)
+                                      ? "w-8 h-fit rounded-full border-purple-500 border-2"
+                                      : "w-8 border-2 border-white h-fit rounded-full"
+                                  }
                                 >
-                                  <span className="flex gap-2 font-medium text-purple-500 hover:font-bold">
-                                    <div className="mb-auto gap-1 text-red-500 font-medium flex items-center">
-                                      {verifyStream(player).stream.viewers}
-                                      <span className="text-red-500 text-base font-bold material-symbols-outlined">
-                                        person
-                                      </span>
-                                    </div>
-                                    {verifyStream(player).stream.channel_name}
-                                  </span>
-                                </a>
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                            <div className="avatar">
-                              <div
-                                className={
-                                  verifyStream(player)
-                                    ? "w-8 h-fit rounded-full border-purple-500 border-2"
-                                    : "w-8 border-2 border-white h-fit rounded-full"
-                                }
-                              >
-                                <img src={player.avatar} />
+                                  <img src={player.avatar} />
+                                </div>
+                              </div>
+                              <div className="flex flex-col font-play text-gray-400 font-medium text-base">
+                                {player.nickname}
+                                {verifyStream(player) ? (
+                                  <a
+                                    className="flex items-center"
+                                    target="blank"
+                                    href={
+                                      verifyStream(player).stream.channel_url
+                                    }
+                                  >
+                                    <span className="flex gap-2 font-medium text-purple-500 hover:font-bold">
+                                      {verifyStream(player).stream.channel_name}
+                                      <div className="mb-auto gap-1 text-red-500 font-medium flex items-center">
+                                        <span className="text-red-500 text-base font-bold material-symbols-outlined">
+                                          person
+                                        </span>
+                                        {verifyStream(player).stream.viewers}
+                                      </div>
+                                    </span>
+                                  </a>
+                                ) : (
+                                  ""
+                                )}
                               </div>
                             </div>
-                          </div>
-                        );
-                      })}
+                          );
+                        })}
+                      </div>
+                      <div className="flex flex-col gap-4 items-end">
+                        {match.teams.faction2.roster.map((player) => {
+                          return (
+                            <div
+                              key={player.id}
+                              className="flex p-1 h-10 gap-2 items-center"
+                            >
+                              <div className="flex flex-col font-play items-end font-medium text-gray-400 text-base">
+                                {player.nickname}
+                                {verifyStream(player) ? (
+                                  <a
+                                    className="flex items-center"
+                                    target="blank"
+                                    href={
+                                      verifyStream(player).stream.channel_url
+                                    }
+                                  >
+                                    <span className="flex gap-2 font-medium text-purple-500 hover:font-bold">
+                                      <div className="mb-auto gap-1 text-red-500 font-medium flex items-center">
+                                        {verifyStream(player).stream.viewers}
+                                        <span className="text-red-500 text-base font-bold material-symbols-outlined">
+                                          person
+                                        </span>
+                                      </div>
+                                      {verifyStream(player).stream.channel_name}
+                                    </span>
+                                  </a>
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+                              <div className="avatar">
+                                <div
+                                  className={
+                                    verifyStream(player)
+                                      ? "w-8 h-fit rounded-full border-purple-500 border-2"
+                                      : "w-8 border-2 border-white h-fit rounded-full"
+                                  }
+                                >
+                                  <img src={player.avatar} />
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </main>
       <footer className={styles.footer}>
