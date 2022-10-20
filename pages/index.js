@@ -168,7 +168,7 @@ export default function Home() {
               FPL C CSGO North America
             </option>
           </select>
-          <label for="my-modal" class="ranking-mobile btn modal-button">
+          <label htmlFor="my-modal" className="ranking-mobile btn modal-button">
             SEE RANKING
           </label>
         </div>
@@ -484,12 +484,12 @@ export default function Home() {
             })}
           </div>
         </div>
-        <input type="checkbox" id="my-modal" class="modal-toggle" />
-        <div class="modal">
-          <div class="modal-box bg-main relative">
+        <input type="checkbox" id="my-modal" className="modal-toggle" />
+        <div className="modal">
+          <div className="modal-box bg-main relative">
             <label
-              for="my-modal"
-              class="btn btn-sm btn-circle absolute right-2 top-2"
+              htmlFor="my-modal"
+              className="btn btn-sm btn-circle absolute right-2 top-2"
             >
               ✕
             </label>
@@ -594,8 +594,8 @@ export default function Home() {
                 </table>
               </div>
             </div>
-            <div class="modal-action">
-              <label for="my-modal" class="btn">
+            <div className="modal-action">
+              <label htmlFor="my-modal" className="btn">
                 CLOSE
               </label>
             </div>
