@@ -2,7 +2,7 @@ import { Html, Head, Main, NextScript } from 'next/document'
 
 export default function Document() {
     return (
-        <Html>
+        <Html data-theme="dark">
             <Head>
                 <meta name="google-site-verification" content="d9h0wAMpo4KhnrihbaQ5mfgRPtYxli482bq4Pkfn63k" />
                 <meta name="description" content="Website to watch FPL live matches and twitch streams" />

@@ -20,38 +20,39 @@ export default function Home() {
     SA: {
       hub_id: "ef607668-a51a-4ea6-8b7b-dab07e0ab151",
       queue_id: "633f0132403c133d88b9832b",
-      leaderboard_id: '6346d436feeb182ac0852df8',
+      leaderboard_id: "6346d436feeb182ac0852df8",
     },
     CSA: {
       hub_id: "81752520-7bad-42a7-a70d-d43fd66011de",
       queue_id: "6340418ad7689d5091584220",
-      leaderboard_id: '634967c64c180a16e15ded04',
+      leaderboard_id: "634967c64c180a16e15ded04",
     },
     NA: {
       hub_id: "748cf78c-be73-4eb9-b131-21552f2f8b75",
       queue_id: "5ec3276bf69bec00070a854b",
-      leaderboard_id: '6337427bf6d76e5b1c191fb5',
+      leaderboard_id: "6337427bf6d76e5b1c191fb5",
     },
     CNA: {
       hub_id: "b6895a52-a70c-41d6-b096-7d05377720c4",
       queue_id: "5aa05432f4ae3d0007e9e0c8",
-      leaderboard_id: '633741aff6d76e5b1c1911e6',
+      leaderboard_id: "633741aff6d76e5b1c1911e6",
     },
     EU: {
       hub_id: "74caad23-077b-4ef3-8b1d-c6a2254dfa75",
       queue_id: "5a200f64aa4cb20006161700",
-      leaderboard_id: '6335bf42bb87d174a4d9bbf8',
+      leaderboard_id: "6335bf42bb87d174a4d9bbf8",
     },
     CEU: {
       hub_id: "fd5780d5-dd2f-4479-906c-57b8e41ae9d7",
       queue_id: "5a200f62aa4cb200061616fe",
-      leaderboard_id: '6335c033f6d76e5b1c0ae062',
+      leaderboard_id: "6335c033f6d76e5b1c0ae062",
     },
   };
   const [streamers, setStreamers] = useState([]);
   const [queue, setQueue] = useState([]);
   const [matches, setMatches] = useState([]);
   const [ranking, setRanking] = useState({});
+  const [prizes, setPrizes] = useState({});
   const [entity, setEntity] = useState(
     translateId[getFromStorage("hub_selected")] || translateId.SA
   );
@@ -63,7 +64,7 @@ export default function Home() {
 
   const getPrizes = () => {
     axios.get(`/api/rankings/prizes/${entity.leaderboard_id}`).then((res) => {
-      setRanking(res.data.payload);
+      setPrizes(res.data.payload);
     });
   };
 
@@ -91,9 +92,9 @@ export default function Home() {
     });
   };
 
-  const verifyStream = (player) => {
+  const verifyStream = (id) => {
     const playerStreaming = streamers.filter((stream) => {
-      return stream.profile.id == player.id;
+      return stream.profile.id == id;
     });
 
     return playerStreaming[0];
@@ -127,7 +128,10 @@ export default function Home() {
 
   useEffect(() => {
     updateStats();
-    setTimeout(updateStats, 60000);
+    setTimeout(
+      setEntity(translateId[getFromStorage("hub_selected")] || translateId.SA),
+      10000
+    );
   }, [entity.hub_id, entity.queue_id]);
 
   return (
@@ -136,33 +140,38 @@ export default function Home() {
         <title>FPL Live Matches</title>
       </Head>
       <main className={styles.main}>
-        <select
-          onChange={(e) => handleSelectHub(e.target.value)}
-          value={
-            getFromStorage("hub_selected") ||
-            "ef607668-a51a-4ea6-8b7b-dab07e0ab151"
-          }
-          className="text-4xl font-play font-bold mb-4 text-center select select-ghost w-fit"
-        >
-          <option className="text-base font-play font-bold" value="SA">
-            FPL CSGO South America
-          </option>
-          <option className="text-base font-play font-bold" value="CSA">
-            FPL C CSGO South America
-          </option>
-          <option className="text-base font-play font-bold" value="EU">
-            FPL CSGO Europe
-          </option>
-          <option className="text-base font-play font-bold" value="CEU">
-            FPL C CSGO Europe
-          </option>
-          <option className="text-base font-play font-bold" value="NA">
-            FPL CSGO North America
-          </option>
-          <option className="text-base font-play font-bold" value="CNA">
-            FPL C CSGO North America
-          </option>
-        </select>
+        <div className="flex">
+          <select
+            onChange={(e) => handleSelectHub(e.target.value)}
+            value={
+              getFromStorage("hub_selected") ||
+              "ef607668-a51a-4ea6-8b7b-dab07e0ab151"
+            }
+            className="text-4xl font-play font-bold mb-4 text-center select select-ghost w-fit"
+          >
+            <option className="text-base font-play font-bold" value="SA">
+              FPL CSGO South America
+            </option>
+            <option className="text-base font-play font-bold" value="CSA">
+              FPL C CSGO South America
+            </option>
+            <option className="text-base font-play font-bold" value="EU">
+              FPL CSGO Europe
+            </option>
+            <option className="text-base font-play font-bold" value="CEU">
+              FPL C CSGO Europe
+            </option>
+            <option className="text-base font-play font-bold" value="NA">
+              FPL CSGO North America
+            </option>
+            <option className="text-base font-play font-bold" value="CNA">
+              FPL C CSGO North America
+            </option>
+          </select>
+          <label htmlFor="my-modal" className="ranking-mobile btn modal-button">
+            SEE RANKING
+          </label>
+        </div>
         <div className="flex flex-col items-center gap-2 mb-8">
           <div className="badge badge-accent font-bold font-play bg-orange-600 border-orange-600">
             {matches.length} LIVE MATCH{matches.length != 1 ? "ES" : ""}
@@ -194,8 +203,8 @@ export default function Home() {
             </ul>
           </div>
         </div>
-        <div className="flex">
-          {/* <div>
+        <div className="content w-full grid gap-4 grid-cols-8 grid-rows-3">
+          <div className="ranking max-w-fit col-start-1 col-end-3">
             <div className="text-2xl font-play font-bold mb-4 w-fit">
               Ranking
             </div>
@@ -209,16 +218,16 @@ export default function Home() {
                   </tr>
                 </thead>
                 <tbody>
-                  {ranking.rankings?.map((player) => {
+                  {ranking.rankings?.slice(0, 10).map((player) => {
                     return (
-                      <tr>
+                      <tr key={player.position}>
                         <td>{player.position}</td>
                         <td>
                           <div className="flex items-center space-x-3">
                             <div className="avatar">
                               <div
                                 className={
-                                  verifyStream(player)
+                                  verifyStream(player.placement.entity_id)
                                     ? "mask mask-squircle w-8 h-8 rounded-full border-purple-500 border-2"
                                     : "mask mask-squircle w-8 h-8 rounded-full"
                                 }
@@ -233,34 +242,58 @@ export default function Home() {
                               <div className="font-medium font-play text-sm">
                                 {player.placement.entity_name}
                               </div>
-                              {verifyStream(player) ? (
-                                  <a
-                                    className="flex items-center"
-                                    target="blank"
-                                    href={
-                                      verifyStream(player).stream.channel_url
+                              {verifyStream(player.placement.entity_id) ? (
+                                <a
+                                  className="flex items-center"
+                                  target="blank"
+                                  href={
+                                    verifyStream(player.placement.entity_id)
+                                      .stream.channel_url
+                                  }
+                                >
+                                  <span className="flex gap-2 font-medium text-purple-500 hover:font-bold">
+                                    {
+                                      verifyStream(player.placement.entity_id)
+                                        .stream.channel_name
                                     }
-                                  >
-                                    <span className="flex gap-2 font-medium text-purple-500 hover:font-bold">
-                                      {verifyStream(player).stream.channel_name}
-                                      <div className="mb-auto gap-1 text-red-500 font-medium flex items-center">
-                                        <span className="text-red-500 text-base font-bold material-symbols-outlined">
-                                          person
-                                        </span>
-                                        {verifyStream(player).stream.viewers}
-                                      </div>
-                                    </span>
-                                  </a>
-                                ) : (
-                                  ""
-                                )}
+                                    <div className="mb-auto gap-1 text-red-500 font-medium flex items-center">
+                                      <span className="text-red-500 text-base font-bold material-symbols-outlined">
+                                        person
+                                      </span>
+                                      {
+                                        verifyStream(player.placement.entity_id)
+                                          .stream.viewers
+                                      }
+                                    </div>
+                                  </span>
+                                </a>
+                              ) : (
+                                ""
+                              )}
                             </div>
                           </div>
                         </td>
                         <th>
-                          <button className="btn btn-ghost btn-xs">
-                            details
-                          </button>
+                          {prizes.leaderboard?.prizes[player.position - 1]
+                            ?.image_url ? (
+                            <img
+                              className="h-6 min-w-fit"
+                              src={
+                                prizes.leaderboard?.prizes[player.position - 1]
+                                  ?.image_url
+                              }
+                            ></img>
+                          ) : (
+                            <div className="font-normal">
+                              <span className="text-orange-600 font-play font-bold mr-2">
+                                F
+                              </span>
+                              {
+                                prizes.leaderboard?.prizes[player.position - 1]
+                                  ?.faceit_points
+                              }
+                            </div>
+                          )}
                         </th>
                       </tr>
                     );
@@ -268,13 +301,13 @@ export default function Home() {
                 </tbody>
               </table>
             </div>
-          </div> */}
-          <div className="w-full gap-8 items-center flex flex-col">
+          </div>
+          <div className="gap-8 col-start-3 col-end-7 flex flex-col">
             {matches.map((match) => {
               return (
                 <div
                   key={match.id}
-                  className="card rounded-lg max-w-4xl w-full bg-card"
+                  className="card rounded-lg max-w-4xl bg-card"
                 >
                   <div className="card-bg flex absolute w-full h-full">
                     <figure>
@@ -293,7 +326,7 @@ export default function Home() {
                   <div className="p-4 px-8 pb-8 card-body">
                     <div className="relative">
                       <div className="flex justify-center mb-4 w-full gap-8">
-                        <h2 className="w-1/2 mr-auto flex items-center font-red-hat text-2xl gap-2 text-white font-medium">
+                        <h2 className="w-1/2 mr-auto flex items-center font-red-hat text-2xl gap-2 text-white font-medium min-w-fit">
                           {match.teams.faction1.name}
                         </h2>
                         <div className="score flex gap-2 pt-1 pb-2 px-4 rounded-lg font-semibold text-3xl align-middle">
@@ -319,7 +352,7 @@ export default function Home() {
                               : match.summaryResults?.factions?.faction2.score}
                           </div>
                         </div>
-                        <h2 className="w-1/2 ml-auto justify-end flex text-2xl font-red-hat items-center gap-2 text-white font-medium">
+                        <h2 className="w-1/2 ml-auto justify-end flex text-2xl font-red-hat items-center gap-2 text-white font-medium min-w-fit">
                           {match.teams.faction2.name}
                         </h2>
                       </div>
@@ -356,7 +389,7 @@ export default function Home() {
                               <div className="avatar">
                                 <div
                                   className={
-                                    verifyStream(player)
+                                    verifyStream(player.id)
                                       ? "w-8 h-fit rounded-full border-purple-500 border-2"
                                       : "w-8 border-2 border-white h-fit rounded-full"
                                   }
@@ -366,21 +399,24 @@ export default function Home() {
                               </div>
                               <div className="flex flex-col font-play text-gray-400 font-medium text-base">
                                 {player.nickname}
-                                {verifyStream(player) ? (
+                                {verifyStream(player.id) ? (
                                   <a
                                     className="flex items-center"
                                     target="blank"
                                     href={
-                                      verifyStream(player).stream.channel_url
+                                      verifyStream(player.id).stream.channel_url
                                     }
                                   >
                                     <span className="flex gap-2 font-medium text-purple-500 hover:font-bold">
-                                      {verifyStream(player).stream.channel_name}
+                                      {
+                                        verifyStream(player.id).stream
+                                          .channel_name
+                                      }
                                       <div className="mb-auto gap-1 text-red-500 font-medium flex items-center">
                                         <span className="text-red-500 text-base font-bold material-symbols-outlined">
                                           person
                                         </span>
-                                        {verifyStream(player).stream.viewers}
+                                        {verifyStream(player.id).stream.viewers}
                                       </div>
                                     </span>
                                   </a>
@@ -401,22 +437,25 @@ export default function Home() {
                             >
                               <div className="flex flex-col font-play items-end font-medium text-gray-400 text-base">
                                 {player.nickname}
-                                {verifyStream(player) ? (
+                                {verifyStream(player.id) ? (
                                   <a
                                     className="flex items-center"
                                     target="blank"
                                     href={
-                                      verifyStream(player).stream.channel_url
+                                      verifyStream(player.id).stream.channel_url
                                     }
                                   >
                                     <span className="flex gap-2 font-medium text-purple-500 hover:font-bold">
                                       <div className="mb-auto gap-1 text-red-500 font-medium flex items-center">
-                                        {verifyStream(player).stream.viewers}
+                                        {verifyStream(player.id).stream.viewers}
                                         <span className="text-red-500 text-base font-bold material-symbols-outlined">
                                           person
                                         </span>
                                       </div>
-                                      {verifyStream(player).stream.channel_name}
+                                      {
+                                        verifyStream(player.id).stream
+                                          .channel_name
+                                      }
                                     </span>
                                   </a>
                                 ) : (
@@ -426,7 +465,7 @@ export default function Home() {
                               <div className="avatar">
                                 <div
                                   className={
-                                    verifyStream(player)
+                                    verifyStream(player.id)
                                       ? "w-8 h-fit rounded-full border-purple-500 border-2"
                                       : "w-8 border-2 border-white h-fit rounded-full"
                                   }
@@ -443,6 +482,123 @@ export default function Home() {
                 </div>
               );
             })}
+          </div>
+        </div>
+        <input type="checkbox" id="my-modal" className="modal-toggle" />
+        <div className="modal">
+          <div className="modal-box bg-main relative">
+            <label
+              htmlFor="my-modal"
+              className="btn btn-sm btn-circle absolute right-2 top-2"
+            >
+              ✕
+            </label>
+            <div>
+              <div className="text-2xl font-play font-bold mb-4 w-fit">
+                Ranking
+              </div>
+              <div className="overflow-x-auto w-full">
+                <table className="table w-full">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th>Name</th>
+                      <th>Prize</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {ranking.rankings?.slice(0, 10).map((player) => {
+                      return (
+                        <tr key={player.position}>
+                          <td>{player.position}</td>
+                          <td>
+                            <div className="flex items-center space-x-3">
+                              <div className="avatar">
+                                <div
+                                  className={
+                                    verifyStream(player.placement.entity_id)
+                                      ? "mask mask-squircle w-8 h-8 rounded-full border-purple-500 border-2"
+                                      : "mask mask-squircle w-8 h-8 rounded-full"
+                                  }
+                                >
+                                  <img
+                                    src={player.placement.entity_avatar}
+                                    alt="Player image"
+                                  />
+                                </div>
+                              </div>
+                              <div>
+                                <div className="font-medium font-play text-sm">
+                                  {player.placement.entity_name}
+                                </div>
+                                {verifyStream(player.placement.entity_id) ? (
+                                  <a
+                                    className="flex items-center"
+                                    target="blank"
+                                    href={
+                                      verifyStream(player.placement.entity_id)
+                                        .stream.channel_url
+                                    }
+                                  >
+                                    <span className="flex gap-2 font-medium text-purple-500 hover:font-bold">
+                                      {
+                                        verifyStream(player.placement.entity_id)
+                                          .stream.channel_name
+                                      }
+                                      <div className="mb-auto gap-1 text-red-500 font-medium flex items-center">
+                                        <span className="text-red-500 text-base font-bold material-symbols-outlined">
+                                          person
+                                        </span>
+                                        {
+                                          verifyStream(
+                                            player.placement.entity_id
+                                          ).stream.viewers
+                                        }
+                                      </div>
+                                    </span>
+                                  </a>
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+                            </div>
+                          </td>
+                          <th>
+                            {prizes.leaderboard?.prizes[player.position - 1]
+                              ?.image_url ? (
+                              <img
+                                className="h-6 min-w-fit"
+                                src={
+                                  prizes.leaderboard?.prizes[
+                                    player.position - 1
+                                  ]?.image_url
+                                }
+                              ></img>
+                            ) : (
+                              <div className="font-normal">
+                                <span className="text-orange-600 font-play font-bold mr-2">
+                                  F
+                                </span>
+                                {
+                                  prizes.leaderboard?.prizes[
+                                    player.position - 1
+                                  ]?.faceit_points
+                                }
+                              </div>
+                            )}
+                          </th>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div className="modal-action">
+              <label htmlFor="my-modal" className="btn">
+                CLOSE
+              </label>
+            </div>
           </div>
         </div>
       </main>

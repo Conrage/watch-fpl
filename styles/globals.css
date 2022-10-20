@@ -21,6 +21,14 @@ a {
 html {
   color-scheme: dark;
 }
+.bg-main {
+  background-color: rgb(30, 34, 43);
+  background-image: radial-gradient(
+    rgba(120, 125, 134, 0.2) 0.5px,
+    rgb(30, 34, 43) 0.5px
+  );
+  background-size: 5px 5px;
+}
 body {
   background-color: rgb(30, 34, 43);
   color: white;
@@ -45,6 +53,25 @@ body {
     padding: 0.1rem 0.7rem 0.1rem 0.7rem;
     gap: 0.5rem;
   }
+}
+@media (max-width: 1345px) {
+  .ranking {
+    display: none;
+  }
+  .content {
+    display: flex !important;
+    justify-content: center;
+    gap: 0 !important;
+  }
+  .ranking-mobile {
+    display: flex !important;
+  }
+}
+.ranking-mobile {
+  display: none;
+}
+.content {
+  display: grid;
 }
 .card-body {
   z-index: 1;
