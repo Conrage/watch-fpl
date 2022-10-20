@@ -152,7 +152,7 @@ export default function Home() {
         <title>FPL Live Matches</title>
       </Head>
       <main className={styles.main}>
-        <div className="flex gap-2">
+        <div className="select-header flex gap-2">
           <select
             onChange={(e) => handleSelectHub(e.target.value)}
             value={
@@ -340,7 +340,7 @@ export default function Home() {
                   </div>
                   <div className="p-4 px-8 pb-8 card-body">
                     <div className="relative">
-                      <div className="flex justify-center mb-4 w-full gap-8">
+                      <div className="scoreboard flex justify-center mb-4 w-full gap-8">
                         <h2 className="w-1/2 mr-auto flex items-center font-red-hat text-2xl gap-2 text-white font-medium min-w-fit">
                           {match.teams.faction1.name}
                         </h2>
