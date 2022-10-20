@@ -30,7 +30,7 @@ export default function Home() {
     NA: {
       hub_id: "748cf78c-be73-4eb9-b131-21552f2f8b75",
       queue_id: "5ec3276bf69bec00070a854b",
-      leaderboard_id: "6337427bf6d76e5b1c191fb5",
+      leaderboard_id: "6337441ebb87d174a4e7e8f1",
     },
     CNA: {
       hub_id: "b6895a52-a70c-41d6-b096-7d05377720c4",
@@ -121,7 +121,7 @@ export default function Home() {
   };
 
   const formatDate = (date) => {
-    if(!date) return '';
+    if (!date) return "";
     var today = new Date(date); // yyyy-mm-dd
 
     var month = today
@@ -140,6 +140,20 @@ export default function Home() {
     }
 
     return "stat-value text-red-500 font-semibold text-4xl";
+  };
+
+  const getCorrectPrize = (position, prizes) => {
+    let correctPrize;
+    prizes.forEach((prize) => {
+      console.log(between(position, prize.start_rank, prize.end_rank), position, prize.start_rank, prize.end_rank)
+      if (between(position, prize.start_rank, prize.end_rank)) {
+        correctPrize = prize;
+      }
+    });
+    return correctPrize;
+  };
+  const between = (x, min, max) => {
+    return x >= min && x <= max;
   };
 
   useEffect(() => {
@@ -289,24 +303,17 @@ export default function Home() {
                           </div>
                         </td>
                         <th>
-                          {ranking.leaderboard?.prizes[player.position - 1]
-                            ?.image_url ? (
+                          {player.prizes[0]?.image_url ? (
                             <img
                               className="h-6 min-w-fit"
-                              src={
-                                ranking.leaderboard?.prizes[player.position - 1]
-                                  ?.image_url
-                              }
+                              src={player.prizes[0]?.image_url}
                             ></img>
                           ) : (
                             <div className="font-normal">
                               <span className="text-orange-600 font-play font-bold mr-2">
                                 F
                               </span>
-                              {
-                                ranking.leaderboard?.prizes[player.position - 1]
-                                  ?.faceit_points
-                              }
+                              {player.prizes[0]?.faceit_points}
                             </div>
                           )}
                         </th>
