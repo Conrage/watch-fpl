@@ -121,6 +121,7 @@ export default function Home() {
   };
 
   const formatDate = (date) => {
+    if(!date) return '';
     var today = new Date(date); // yyyy-mm-dd
 
     var month = today
