@@ -215,7 +215,7 @@ export default function Home() {
             </ul>
           </div>
         </div>
-        <div className="content w-full grid gap-4 grid-cols-8 grid-rows-3">
+        <div className="content w-full grid gap-4 grid-cols-8">
           <div className="ranking max-w-fit col-start-1 col-end-3">
             <div className="text-2xl font-play font-bold mb-4 w-fit">
               Ranking{" "}
