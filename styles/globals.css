@@ -54,6 +54,32 @@ body {
     gap: 0.5rem;
   }
 }
+@media (max-width: 450px) {
+  .scoreboard.gap-8 {
+    gap: 0;
+  }
+  .select-header {
+    flex-direction: column;
+    margin-bottom: 1rem;
+    gap: 0;
+  }
+  .content .gap-2 {
+    gap: 0.3rem !important;
+  }
+  .content .text-base {
+    font-size: 83% !important;
+  }
+  .modal-box {
+    padding: .7rem;
+  }
+  .modal-box .table :where(th, td) {
+    padding: .4rem;
+    font-size: 80% !important;
+  }
+  .select-header select {
+    margin-bottom: .5rem;
+  }
+}
 @media (max-width: 1345px) {
   .ranking {
     display: none;
