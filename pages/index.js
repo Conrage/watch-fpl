@@ -20,7 +20,7 @@ export default function Home() {
     SA: {
       hub_id: "ef607668-a51a-4ea6-8b7b-dab07e0ab151",
       queue_id: "633f0132403c133d88b9832b",
-      leaderboard_id: "6346d436feeb182ac0852df8",
+      leaderboard_id: "6346d599feeb182ac0853f5b",
     },
     CSA: {
       hub_id: "81752520-7bad-42a7-a70d-d43fd66011de",
@@ -35,7 +35,7 @@ export default function Home() {
     CNA: {
       hub_id: "b6895a52-a70c-41d6-b096-7d05377720c4",
       queue_id: "5aa05432f4ae3d0007e9e0c8",
-      leaderboard_id: "633741aff6d76e5b1c1911e6",
+      leaderboard_id: "63374208bb87d174a4e7c3c4",
     },
     EU: {
       hub_id: "74caad23-077b-4ef3-8b1d-c6a2254dfa75",
