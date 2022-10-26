@@ -657,6 +657,7 @@ export default function Home() {
         >
           <img className="h-6" src="/github.png"></img>
         </a>
+        <div className="font-base flex gap-2 h-6"><img className="h-6" src="/PIX.png"></img> jvococonrad@gmail.com</div>
       </footer>
     </div>
   );
