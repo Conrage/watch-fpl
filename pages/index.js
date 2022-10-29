@@ -142,20 +142,6 @@ export default function Home() {
     return "stat-value text-red-500 font-semibold text-4xl";
   };
 
-  const getCorrectPrize = (position, prizes) => {
-    let correctPrize;
-    prizes.forEach((prize) => {
-      console.log(between(position, prize.start_rank, prize.end_rank), position, prize.start_rank, prize.end_rank)
-      if (between(position, prize.start_rank, prize.end_rank)) {
-        correctPrize = prize;
-      }
-    });
-    return correctPrize;
-  };
-  const between = (x, min, max) => {
-    return x >= min && x <= max;
-  };
-
   useEffect(() => {
     updateStats();
   }, [entity.hub_id, entity.queue_id]);
