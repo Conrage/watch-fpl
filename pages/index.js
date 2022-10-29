@@ -626,7 +626,7 @@ export default function Home() {
           </div>
         </div>
       </main>
-      <footer className={styles.footer} className="flex">
+      <footer className={styles.footer}>
         <a
           className="font-base max-w-fit"
           href="https://github.com/Conrage"
