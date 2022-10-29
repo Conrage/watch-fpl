@@ -15,3 +15,5 @@
 
 ## Como contribuir
 #### Leia o guia de contribuição [aqui](CONTRIBUTING.md)
+
+#### Se você apoia o projeto considere contribuir com um PIX: jvococonrad@gmail.com :)
