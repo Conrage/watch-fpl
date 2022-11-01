@@ -20,32 +20,32 @@ export default function Home() {
     SA: {
       hub_id: "ef607668-a51a-4ea6-8b7b-dab07e0ab151",
       queue_id: "633f0132403c133d88b9832b",
-      leaderboard_id: "6346d599feeb182ac0853f5b",
+      leaderboard_id: "634573aa4c180a16e13cf07b",
     },
     CSA: {
       hub_id: "81752520-7bad-42a7-a70d-d43fd66011de",
       queue_id: "6340418ad7689d5091584220",
-      leaderboard_id: "634967c64c180a16e15ded04",
+      leaderboard_id: "6349688f4c180a16e15df45b",
     },
     NA: {
       hub_id: "748cf78c-be73-4eb9-b131-21552f2f8b75",
       queue_id: "5ec3276bf69bec00070a854b",
-      leaderboard_id: "6337441ebb87d174a4e7e8f1",
+      leaderboard_id: "6360073f598cb853fc0865ec",
     },
     CNA: {
       hub_id: "b6895a52-a70c-41d6-b096-7d05377720c4",
       queue_id: "5aa05432f4ae3d0007e9e0c8",
-      leaderboard_id: "63374208bb87d174a4e7c3c4",
+      leaderboard_id: "6360062868dfa436fc90d212",
     },
     EU: {
       hub_id: "74caad23-077b-4ef3-8b1d-c6a2254dfa75",
       queue_id: "5a200f64aa4cb20006161700",
-      leaderboard_id: "6335bf42bb87d174a4d9bbf8",
+      leaderboard_id: "635ff333598cb853fc079b80",
     },
     CEU: {
       hub_id: "fd5780d5-dd2f-4479-906c-57b8e41ae9d7",
       queue_id: "5a200f62aa4cb200061616fe",
-      leaderboard_id: "6335c033f6d76e5b1c0ae062",
+      leaderboard_id: "635ff74568dfa436fc90434c",
     },
   };
   const [streamers, setStreamers] = useState([]);
