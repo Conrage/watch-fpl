@@ -1,34 +1,19 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h1>FPL Live Matches</h1>
+<img width="750px" height="500px" src="https://cdn.discordapp.com/attachments/360886291555942412/1032001440648007721/unknown.png">
 
-## Getting Started
+![GitHub deployments](https://img.shields.io/github/deployments/Conrage/watch-fpl/Production) ![GitHub branch checks state](https://img.shields.io/github/checks-status/Conrage/watch-fpl/main) ![GitHub top language](https://img.shields.io/github/languages/top/Conrage/watch-fpl) ![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/Conrage/watch-fpl)
+### O site está disponível em https://watchfpl.vercel.app/
 
-First, run the development server:
+## Ou você pode baixar e rodar na sua máquina
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+#### Instale as dependencias do projeto e rode
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`npm install`
+`npm run start`
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+#### Acesse no seu navegador em http://localhost:3000
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## Como contribuir
+#### Leia o guia de contribuição [aqui](CONTRIBUTING.md)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+#### Se você apoia o projeto considere contribuir com um PIX: jvococonrad@gmail.com :)
