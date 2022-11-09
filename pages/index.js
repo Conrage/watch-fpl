@@ -20,7 +20,7 @@ export default function Home() {
     SA: {
       hub_id: "ef607668-a51a-4ea6-8b7b-dab07e0ab151",
       queue_id: "633f0132403c133d88b9832b",
-      leaderboard_id: "634573aa4c180a16e13cf07b",
+      leaderboard_id: "6345a82afe9d790175656a7a",
     },
     CSA: {
       hub_id: "81752520-7bad-42a7-a70d-d43fd66011de",
