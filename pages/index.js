@@ -20,7 +20,7 @@ export default function Home() {
     SA: {
       hub_id: "ef607668-a51a-4ea6-8b7b-dab07e0ab151",
       queue_id: "633f0132403c133d88b9832b",
-      leaderboard_id: "634573aa4c180a16e13cf07b",
+      leaderboard_id: "6345a915fe9d79017565789b",
     },
     CSA: {
       hub_id: "81752520-7bad-42a7-a70d-d43fd66011de",
@@ -588,14 +588,11 @@ export default function Home() {
                             </div>
                           </td>
                           <th>
-                            {ranking.leaderboard?.prizes[player.position - 1]
-                              ?.image_url ? (
+                            {player.prizes[0]?.image_url ? (
                               <img
                                 className="h-6 min-w-fit"
                                 src={
-                                  ranking.leaderboard?.prizes[
-                                    player.position - 1
-                                  ]?.image_url
+                                  player.prizes[0]?.image_url
                                 }
                               ></img>
                             ) : (
@@ -604,9 +601,7 @@ export default function Home() {
                                   F
                                 </span>
                                 {
-                                  ranking.leaderboard?.prizes[
-                                    player.position - 1
-                                  ]?.faceit_points
+                                  player.prizes[0]?.faceit_points
                                 }
                               </div>
                             )}
