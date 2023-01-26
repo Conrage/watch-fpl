@@ -20,22 +20,22 @@ export default function Home() {
     SA: {
       hub_id: "ef607668-a51a-4ea6-8b7b-dab07e0ab151",
       queue_id: "633f0132403c133d88b9832b",
-      leaderboard_id: "638220f086e88e0ab8075953",
+      leaderboard_id: "63ce98825ca9066d45ed17b5",
     },
     CSA: {
       hub_id: "81752520-7bad-42a7-a70d-d43fd66011de",
       queue_id: "6340418ad7689d5091584220",
-      leaderboard_id: "6382cf153924ae3b7deb73ed",
+      leaderboard_id: "63af03f65ca9066d45a74e55",
     },
     EU: {
       hub_id: "74caad23-077b-4ef3-8b1d-c6a2254dfa75",
       queue_id: "5a200f64aa4cb20006161700",
-      leaderboard_id: "6387b642e064ff4cb40ec556",
+      leaderboard_id: "63b061644ca62004dd41adc8",
     },
     CEU: {
       hub_id: "fd5780d5-dd2f-4479-906c-57b8e41ae9d7",
       queue_id: "5a200f62aa4cb200061616fe",
-      leaderboard_id: "6387b75986e88e0ab840b6e8",
+      leaderboard_id: "63b062004ca62004dd41b32b",
     },
   };
   const [streamers, setStreamers] = useState([]);
