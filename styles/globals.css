@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 @import url("https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@100;200;300;400;500;600;700;800;900&display=swap');
+.hub-card {
+  @apply min-w-fit flex-none min-w-fit h-32 rounded-md shadow border-4 border-gray-700 transition cursor-pointer hover:border-indigo-500 hover:border-opacity-50 active:scale-95 active:border-opacity-100
+}
 html,
 body {
   padding: 0;
@@ -30,13 +34,8 @@ html {
   background-size: 5px 5px;
 }
 body {
-  background-color: rgb(30, 34, 43);
-  color: white;
-  background-image: radial-gradient(
-    rgba(120, 125, 134, 0.2) 0.5px,
-    rgb(30, 34, 43) 0.5px
-  );
-  background-size: 5px 5px;
+  background-image: url('/bgcs2.svg');
+  background-size: cover ;
 }
 .bg-card {
   background-color: rgb(27, 30, 37);
@@ -111,7 +110,7 @@ body {
   height: 100%;
   mask-image: linear-gradient(
     to bottom,
-    rgba(42, 48, 60, 0.05) -40%,
+    rgba(42, 48, 60, 0.1) -10%,
     rgba(42, 48, 60, 0) 100%
   );
   background-size: cover;
