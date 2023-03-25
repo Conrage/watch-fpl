@@ -17,25 +17,25 @@ export default function Home() {
   };
 
   const translateId = {
+    CS2: {
+      hub_id: "e63afec5-b332-425f-943b-2f138c01c6d5",
+      queue_id: "6329ce275606951a1bd271b2",
+    },
     SA: {
       hub_id: "ef607668-a51a-4ea6-8b7b-dab07e0ab151",
       queue_id: "633f0132403c133d88b9832b",
-      leaderboard_id: "63ce98825ca9066d45ed17b5",
     },
     CSA: {
       hub_id: "81752520-7bad-42a7-a70d-d43fd66011de",
       queue_id: "6340418ad7689d5091584220",
-      leaderboard_id: "63af03f65ca9066d45a74e55",
     },
     EU: {
       hub_id: "74caad23-077b-4ef3-8b1d-c6a2254dfa75",
       queue_id: "5a200f64aa4cb20006161700",
-      leaderboard_id: "63b061644ca62004dd41adc8",
     },
     CEU: {
       hub_id: "fd5780d5-dd2f-4479-906c-57b8e41ae9d7",
       queue_id: "5a200f62aa4cb200061616fe",
-      leaderboard_id: "63b062004ca62004dd41b32b",
     },
   };
   const [streamers, setStreamers] = useState([]);
@@ -54,7 +54,7 @@ export default function Home() {
   const getRanking = () => {
     axios
       .get(
-        `/api/rankings/${entity.hub_id}?leaderboard_id=${entity.leaderboard_id}`
+        `/api/rankings/${entity.hub_id}`
       )
       .then((res) => {
         setRanking(res.data.payload);
@@ -151,6 +151,9 @@ export default function Home() {
             }
             className="text-4xl font-play font-bold mb-4 text-center select select-ghost w-fit"
           >
+            <option className="text-base font-play font-bold" value="CS2">
+              FACEIT CS2 10mans
+            </option>
             <option className="text-base font-play font-bold" value="SA">
               FPL CSGO South America
             </option>
