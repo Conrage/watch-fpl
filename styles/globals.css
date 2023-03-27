@@ -87,6 +87,8 @@ body {
     display: flex !important;
     justify-content: center;
     gap: 0 !important;
+    width: 90% !important;
+    margin: 0 auto !important;
   }
   .ranking-mobile {
     display: flex !important;
@@ -96,7 +98,8 @@ body {
   display: none;
 }
 .content {
-  display: grid;
+  display: flex;
+  width: 100%;
 }
 .card-body {
   z-index: 1;

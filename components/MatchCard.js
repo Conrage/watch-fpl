@@ -29,12 +29,12 @@ export default function MatchCard({ match, streamers }) {
   }
   const verifyResult = (score1, score2) => {
     if (score1 == score2) {
-      return "stat-value text-gray-400 font-semibold text-4xl";
+      return "stat-value text-gray-400 font-semibold font-play text-3xl";
     } else if (score1 > score2) {
-      return "stat-value text-green-500 font-semibold text-4xl";
+      return "stat-value text-green-500 font-semibold font-play text-3xl";
     }
 
-    return "stat-value text-red-500 font-semibold text-4xl";
+    return "stat-value text-red-500 text-opacity-50 font-play font-semibold text-3xl";
   };
 
   const getMap = (maps, pick, allMaps) => {
@@ -46,7 +46,7 @@ export default function MatchCard({ match, streamers }) {
         return {
           class_name: "Picking map",
           image_lg:
-            "https://quoramarketing.com/wp-content/uploads/2022/09/CSGO-All-Maps-in-Competitive-Pool-Active-Duty.jpg",
+            "https://upload.wikimedia.org/wikipedia/commons/8/89/HD_transparent_picture.png",
         };
       return allMaps[0];
     }
@@ -54,7 +54,7 @@ export default function MatchCard({ match, streamers }) {
   };
 
   return (
-    <div key={match.id} className={`card overflow-visible rounded-none rounded-md border-4 border-gray-700 max-w-4xl bg-card relative ${hasStreamInMatch() ? '!border-indigo-500' : ''}`}>
+    <div key={match.id} className={`w-full card overflow-visible rounded-none !rounded-md border-4 border-gray-700 bg-card relative ${hasStreamInMatch() ? '!border-indigo-500' : ''}`}>
       {hasStreamInMatch() && <div className="absolute flex font-red-hat font-semibold text-sm items-center gap-2 text-gray-300 top-0 w-full card-bg left-0 p-2 py-1 bg-card"><div className="h-2 w-2 animate-ping rounded-full bg-indigo-500"></div><div className="h-2 w-2 absolute rounded-full bg-indigo-500"></div> Stream on</div>}
       <div className="card-bg flex absolute w-full h-full">
         <figure>
@@ -77,7 +77,7 @@ export default function MatchCard({ match, streamers }) {
             <h2 className="w-1/2 mr-auto flex items-center font-red-hat text-2xl gap-2 text-white font-medium min-w-fit">
               {match.teams.faction1.name}
             </h2>
-            <div className="score flex gap-2 pt-1 pb-2 px-4 rounded-lg font-semibold text-3xl align-middle">
+            <div className="score flex gap-2 pt-1 pb-2 px-4 rounded-lg font-semibold text-3xl flex items-center">
               <div
                 className={verifyResult(
                   match.summaryResults?.factions?.faction1.score,
@@ -88,7 +88,7 @@ export default function MatchCard({ match, streamers }) {
                   ? `0${match.summaryResults?.factions?.faction1.score}`
                   : match.summaryResults?.factions?.faction1.score}
               </div>
-              :
+              <span className="h-12 w-12 rounded-full bg-gray-700 bg-opacity-50 grid font-play text-indigo-500 text-sm place-items-center">VS</span>
               <div
                 className={verifyResult(
                   match.summaryResults?.factions?.faction2.score,
@@ -106,7 +106,7 @@ export default function MatchCard({ match, streamers }) {
           </div>
         </div>
         {expanded && <div className="w-full h-fit flex justify-center">
-          <div className="map-card h-fit p-1 rounded-lg flex items-center justify-center w-52 image-full">
+          <div className="map-card border-2 border-gray-700 shadow-lg h-fit p-1 rounded-lg flex items-center justify-center w-52 image-full">
             <figure>
               <img
                 src={
@@ -163,7 +163,7 @@ export default function MatchCard({ match, streamers }) {
                         target="blank"
                         href={verifyStream(player.id).stream.channel_url}
                       >
-                        <span className="flex gap-2 font-medium text-purple-500 hover:font-bold">
+                        <span className="flex gap-2 font-medium text-purple-500 transition px-1 pl-0.5 rounded hover:bg-indigo-500 hover:text-white">
                           {verifyStream(player.id).stream.channel_name}
                           <div className="mb-auto gap-1 text-red-500 font-medium flex items-center">
                             <span className="text-red-500 text-base font-bold material-symbols-outlined">
@@ -196,7 +196,7 @@ export default function MatchCard({ match, streamers }) {
                         target="blank"
                         href={verifyStream(player.id).stream.channel_url}
                       >
-                        <span className="flex gap-2 font-medium text-purple-500 hover:font-bold">
+                        <span className="flex gap-2 font-medium text-purple-500 transition px-1 pr-0.5 rounded hover:bg-indigo-500 hover:text-white">
                           <div className="mb-auto gap-1 text-red-500 font-medium flex items-center">
                             {verifyStream(player.id).stream.viewers}
                             <span className="text-red-500 text-base font-bold material-symbols-outlined">
