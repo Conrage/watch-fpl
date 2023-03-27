@@ -59,12 +59,14 @@ export default function MatchCard({ match, streamers }) {
       <div className="card-bg flex absolute w-full h-full">
         <figure>
           <img
+          className="object-cover"
             src={match.teams.faction1.avatar}
             alt={match.teams.faction1.name}
           />
         </figure>
         <figure>
           <img
+          className="object-cover"
             src={match.teams.faction2.avatar}
             alt={match.teams.faction2.name}
           />
