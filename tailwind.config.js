@@ -8,6 +8,7 @@ module.exports = {
     fontFamily: {
       'play': ['Play', 'sans-serif'],
       'red-hat': ['Red Hat Display', 'sans-serif'],
+      'jost': ['Jost', 'sans-serif'],
     },
     extend: {},
   },

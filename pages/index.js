@@ -2,6 +2,7 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import styles from "../styles/Home.module.css";
 import axios from "axios";
+import MatchCard from "../components/MatchCard";
 
 export default function Home() {
   const getFromStorage = (key) => {
@@ -17,48 +18,42 @@ export default function Home() {
   };
 
   const translateId = {
+    CS2: {
+      hub_id: "e63afec5-b332-425f-943b-2f138c01c6d5",
+      queue_id: "6329ce275606951a1bd271b2",
+    },
     SA: {
       hub_id: "ef607668-a51a-4ea6-8b7b-dab07e0ab151",
       queue_id: "633f0132403c133d88b9832b",
-      leaderboard_id: "63ce98825ca9066d45ed17b5",
     },
     CSA: {
       hub_id: "81752520-7bad-42a7-a70d-d43fd66011de",
       queue_id: "6340418ad7689d5091584220",
-      leaderboard_id: "63af03f65ca9066d45a74e55",
     },
     EU: {
       hub_id: "74caad23-077b-4ef3-8b1d-c6a2254dfa75",
       queue_id: "5a200f64aa4cb20006161700",
-      leaderboard_id: "63b061644ca62004dd41adc8",
     },
     CEU: {
       hub_id: "fd5780d5-dd2f-4479-906c-57b8e41ae9d7",
       queue_id: "5a200f62aa4cb200061616fe",
-      leaderboard_id: "63b062004ca62004dd41b32b",
     },
   };
   const [streamers, setStreamers] = useState([]);
   const [queue, setQueue] = useState([]);
   const [matches, setMatches] = useState([]);
   const [ranking, setRanking] = useState({});
-  const [entity, setEntity] = useState(
-    translateId[getFromStorage("hub_selected")] || translateId.SA
-  );
+  const [clock, setClock] = useState(null);
+  const [entity, setEntity] = useState(translateId.SA);
 
   const handleSelectHub = (hub) => {
-    setToStorage("hub_selected", hub);
     setEntity(translateId[hub]);
   };
 
   const getRanking = () => {
-    axios
-      .get(
-        `/api/rankings/${entity.hub_id}?leaderboard_id=${entity.leaderboard_id}`
-      )
-      .then((res) => {
-        setRanking(res.data.payload);
-      });
+    axios.get(`/api/rankings/${entity.hub_id}`).then((res) => {
+      setRanking(res.data.payload);
+    });
   };
 
   const getQueues = () => {
@@ -87,21 +82,6 @@ export default function Home() {
     return playerStreaming[0];
   };
 
-  const getMap = (maps, pick, allMaps) => {
-    const map = maps?.filter((map) => {
-      return map.class_name == pick;
-    })[0];
-    if (!map) {
-      if (!allMaps)
-        return {
-          class_name: "Picking map",
-          image_lg:
-            "https://quoramarketing.com/wp-content/uploads/2022/09/CSGO-All-Maps-in-Competitive-Pool-Active-Duty.jpg",
-        };
-      return allMaps[0];
-    }
-    return map;
-  };
 
   const updateStats = () => {
     getMatches();
@@ -122,16 +102,6 @@ export default function Home() {
     return month + " " + day;
   };
 
-  const verifyResult = (score1, score2) => {
-    if (score1 == score2) {
-      return "stat-value text-gray-400 font-semibold text-4xl";
-    } else if (score1 > score2) {
-      return "stat-value text-green-500 font-semibold text-4xl";
-    }
-
-    return "stat-value text-red-500 font-semibold text-4xl";
-  };
-
   useEffect(() => {
     updateStats();
   }, [entity.hub_id, entity.queue_id]);
@@ -139,43 +109,66 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>FPL Live Matches</title>
+        <title>Watch FPL</title>
       </Head>
       <main className={styles.main}>
-        <div className="select-header flex gap-2">
-          <select
-            onChange={(e) => handleSelectHub(e.target.value)}
-            value={
-              getFromStorage("hub_selected") ||
-              "ef607668-a51a-4ea6-8b7b-dab07e0ab151"
-            }
-            className="text-4xl font-play font-bold mb-4 text-center select select-ghost w-fit"
-          >
-            <option className="text-base font-play font-bold" value="SA">
-              FPL CSGO South America
-            </option>
-            <option className="text-base font-play font-bold" value="CSA">
-              FPL C CSGO South America
-            </option>
-            <option className="text-base font-play font-bold" value="EU">
-              FPL CSGO Europe
-            </option>
-            <option className="text-base font-play font-bold" value="CEU">
-              FPL C CSGO Europe
-            </option>
-          </select>
-          <label htmlFor="my-modal" className="ranking-mobile btn modal-button">
-            SEE RANKING
-          </label>
+        <img src="/logo.png" className="h-14 mt-2 mx-auto"></img>
+        <h1 className="font-red-hat text-3xl font-bold text-gray-100 mr-auto mt-8">
+          Choose a hub
+        </h1>
+        <div className="px-4 py-4 gap-4 flex w-full mt-6 overflow-x-auto">
+          <img
+            onClick={() => setEntity(translateId.CS2)}
+            src="/FACEITCS2.png"
+            className={`hub-card ${entity.hub_id == translateId.CS2.hub_id
+              ? "!scale-105 !border-opacity-100 !border-indigo-500"
+              : ""
+              }`}
+          ></img>
+          <img
+            onClick={() => setEntity(translateId.SA)}
+            src="/FPLSA.png"
+            className={`hub-card ${entity.hub_id == translateId.SA.hub_id
+              ? "!scale-105 !border-opacity-100 !border-indigo-500"
+              : ""
+              }`}
+          ></img>
+          <img
+            onClick={() => setEntity(translateId.CSA)}
+            src="/FPLSAC.png"
+            className={`hub-card ${entity.hub_id == translateId.CSA.hub_id
+              ? "!scale-105 !border-opacity-100 !border-indigo-500"
+              : ""
+              }`}
+          ></img>
+          <img
+            onClick={() => setEntity(translateId.EU)}
+            src="/FPLEU.png"
+            className={`hub-card ${entity.hub_id == translateId.EU.hub_id
+              ? "!scale-105 !border-opacity-100 !border-indigo-500"
+              : ""
+              }`}
+          ></img>
+          <img
+            onClick={() => setEntity(translateId.CEU)}
+            src="/FPLEUC.png"
+            className={`hub-card ${entity.hub_id == translateId.CEU.hub_id
+              ? "!scale-105 !border-opacity-100 !border-indigo-500"
+              : ""
+              }`}
+          ></img>
         </div>
-        <div className="flex flex-col items-center gap-2 mb-8">
-          <div className="badge badge-accent font-bold font-play bg-orange-600 border-orange-600">
-            {matches.length} LIVE MATCH{matches.length != 1 ? "ES" : ""}
+        <div className="flex flex-col lg:flex-row items-center gap-2 mt-6 w-full">
+          <div className="font-play flex items-center gap-1 text-lg font-medium text-gray-200">
+            Currently Matches -{" "}
+            <span className="font-bold text-1xl text-indigo-500">
+              {matches.length}
+            </span>
           </div>
           <div className="dropdown dropdown-hover dropdown-center">
             <label
               tabIndex="0"
-              className="badge font-bold font-play badge-primary mb-2"
+              className="badge font-bold font-play badge-primary rounded-sm"
             >
               {queue.length} PLAYERS ON QUEUE
             </label>
@@ -198,295 +191,172 @@ export default function Home() {
               })}
             </ul>
           </div>
+          <label htmlFor="my-modal" className="ranking-mobile btn btn-sm modal-button btn-primary rounded text-white">
+            SEE RANKING
+          </label>
         </div>
-        <div className="content w-full grid gap-4 grid-cols-8">
-          <div className="ranking max-w-fit col-start-1 col-end-3">
-            <div className="text-2xl font-play font-bold mb-4 w-fit">
+        <div className="content justify-start mr-auto flex gap-12">
+          <div className="flex flex-col mt-12 w-full gap-12">
+            {matches.map((match) => {
+              return (
+                <MatchCard match={match} streamers={streamers}></MatchCard>
+              );
+            })}
+          </div>
+          <div className="ranking min-w-fit w-1/2 ">
+            <div className="text-2xl font-play font-bold text-gray-100 mb-4 w-fit">
               Ranking{" "}
               <span className="ml-4 stat-desc text-lg font-medium">{` ${formatDate(
                 ranking.leaderboard?.start_date
               )} - ${formatDate(ranking.leaderboard?.end_date)}`}</span>
             </div>
-            <div className="overflow-x-auto w-full">
-              <table className="table w-full">
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th>Name</th>
-                    <th>Prize</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {ranking.rankings?.slice(0, 10).map((player) => {
-                    return (
-                      <tr key={player.position}>
-                        <td>{player.position}</td>
-                        <td>
-                          <div className="flex items-center space-x-3">
-                            <div className="avatar">
-                              <div
-                                className={
-                                  verifyStream(player.placement.entity_id)
-                                    ? "mask mask-squircle w-8 h-8 rounded-full border-purple-500 border-2"
-                                    : "mask mask-squircle w-8 h-8 rounded-full"
-                                }
-                              >
-                                <img
-                                  src={player.placement.entity_avatar}
-                                  alt="Player image"
-                                />
-                              </div>
-                            </div>
-                            <div>
-                              <div className="font-medium font-play text-sm">
-                                {player.placement.entity_name}
-                              </div>
-                              {verifyStream(player.placement.entity_id) ? (
-                                <a
-                                  className="flex items-center"
-                                  target="blank"
-                                  href={
-                                    verifyStream(player.placement.entity_id)
-                                      .stream.channel_url
-                                  }
-                                >
-                                  <span className="flex gap-2 font-medium text-purple-500 hover:font-bold">
-                                    {
-                                      verifyStream(player.placement.entity_id)
-                                        .stream.channel_name
-                                    }
-                                    <div className="mb-auto gap-1 text-red-500 font-medium flex items-center">
-                                      <span className="text-red-500 text-base font-bold material-symbols-outlined">
-                                        person
-                                      </span>
-                                      {
-                                        verifyStream(player.placement.entity_id)
-                                          .stream.viewers
-                                      }
-                                    </div>
-                                  </span>
-                                </a>
-                              ) : (
-                                ""
-                              )}
-                            </div>
-                          </div>
-                        </td>
-                        <th>
-                          {player.prizes[0]?.image_url ? (
-                            <img
-                              className="h-6 min-w-fit"
-                              src={player.prizes[0]?.image_url}
-                            ></img>
-                          ) : (
-                            <div className="font-normal">
-                              <span className="text-orange-600 font-play font-bold mr-2">
-                                F
-                              </span>
-                              {player.prizes[0]?.faceit_points}
-                            </div>
-                          )}
-                        </th>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div className="gap-8 col-start-3 col-end-7 flex flex-col">
-            {matches.map((match) => {
-              return (
-                <div
-                  key={match.id}
-                  className="card rounded-lg max-w-4xl bg-card"
-                >
-                  <div className="card-bg flex absolute w-full h-full">
-                    <figure>
-                      <img
-                        src={match.teams.faction1.avatar}
-                        alt={match.teams.faction1.name}
-                      />
-                    </figure>
-                    <figure>
-                      <img
-                        src={match.teams.faction2.avatar}
-                        alt={match.teams.faction2.name}
-                      />
-                    </figure>
-                  </div>
-                  <div className="p-4 px-8 pb-8 card-body">
-                    <div className="relative">
-                      <div className="scoreboard flex justify-center mb-4 w-full gap-8">
-                        <h2 className="w-1/2 mr-auto flex items-center font-red-hat text-2xl gap-2 text-white font-medium min-w-fit">
-                          {match.teams.faction1.name}
-                        </h2>
-                        <div className="score flex gap-2 pt-1 pb-2 px-4 rounded-lg font-semibold text-3xl align-middle">
-                          <div
-                            className={verifyResult(
-                              match.summaryResults?.factions?.faction1.score,
-                              match.summaryResults?.factions?.faction2.score
-                            )}
-                          >
-                            {match.summaryResults?.factions?.faction1.score < 10
-                              ? `0${match.summaryResults?.factions?.faction1.score}`
-                              : match.summaryResults?.factions?.faction1.score}
-                          </div>
-                          :
-                          <div
-                            className={verifyResult(
-                              match.summaryResults?.factions?.faction2.score,
-                              match.summaryResults?.factions?.faction1.score
-                            )}
-                          >
-                            {match.summaryResults?.factions?.faction2.score < 10
-                              ? `0${match.summaryResults?.factions?.faction2.score}`
-                              : match.summaryResults?.factions?.faction2.score}
-                          </div>
+            <div className="overflow-x-auto w-full drop-shadow-lg rounded-md">
+              {
+                ranking.rankings && <div className="relative flex items-center p-4 bg-indigo-500" key={ranking.rankings[0].position + ranking.rankings[0].placement.entity_id  + entity.hub_id}>
+                  <td className="mr-4 font-play text-gray-200 font-semibold text-2xl">{ranking.rankings[0].position}</td>
+                  <td>
+                    <div className="flex items-center space-x-2">
+                      <div className="avatar">
+                        <div
+                          className={
+                            verifyStream(ranking.rankings[0].placement.entity_id)
+                              ? "mask mask-squircle w-8 h-8 rounded-full border-purple-500 border-2"
+                              : "mask mask-squircle w-8 h-8 rounded-full"
+                          }
+                        >
+                          <img
+                            src={ranking.rankings[0].placement.entity_avatar}
+                            alt="Player image"
+                          />
                         </div>
-                        <h2 className="w-1/2 ml-auto justify-end flex text-2xl font-red-hat items-center gap-2 text-white font-medium min-w-fit">
-                          {match.teams.faction2.name}
-                        </h2>
                       </div>
-                      <div className="w-full h-fit flex justify-center">
-                        <div className="map-card h-fit p-1 rounded-lg flex items-center justify-center w-52 image-full">
-                          <figure>
-                            <img
-                              src={
-                                getMap(
-                                  match.voting?.map.entities,
-                                  match.voting?.map.pick,
-                                  match.maps
-                                )?.image_lg
-                              }
-                              className="rounded-lg"
-                              alt={
-                                getMap(
-                                  match.voting?.map.entities,
-                                  match.voting?.map.pick,
-                                  match.maps
-                                )?.class_name
-                              }
-                            />
-                          </figure>
-                          <div className="map-card-body h-8 flex items-center justify-center">
-                            <h2 className="text-gray-200 font-play text-base mx-auto">
+                      <div>
+                        <div className="font-regular text-gray-200 font-play text-lg">
+                          {ranking.rankings[0].placement.entity_name}
+                        </div>
+                        {verifyStream(ranking.rankings[0].placement.entity_id) ? (
+                          <a
+                            className="flex items-center"
+                            target="blank"
+                            href={
+                              verifyStream(ranking.rankings[0].placement.entity_id)
+                                .stream.channel_url
+                            }
+                          >
+                            <span className="flex gap-2 font-medium text-purple-500 hover:font-bold">
                               {
-                                getMap(
-                                  match.voting?.map.entities,
-                                  match.voting?.map.pick,
-                                  match.maps
-                                )?.class_name
+                                verifyStream(ranking.rankings[0].placement.entity_id)
+                                  .stream.channel_name
                               }
-                            </h2>
+                              <div className="mb-auto gap-1 text-red-500 font-medium flex items-center">
+                                <span className="text-red-500 text-base font-bold material-symbols-outlined">
+                                  person
+                                </span>
+                                {
+                                  verifyStream(ranking.rankings[0].placement.entity_id)
+                                    .stream.viewers
+                                }
+                              </div>
+                            </span>
+                          </a>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    </div>
+                  </td>
+                  <th className="ml-auto">
+                    {ranking.rankings[0].prizes[0]?.image_url ? (
+                      <img
+                        className="h-6 min-w-fit"
+                        src={ranking.rankings[0].prizes[0]?.image_url}
+                      ></img>
+                    ) : (
+                      <div className="font-normal">
+                        <span className="text-orange-600 font-play font-bold mr-2">
+                          F
+                        </span>
+                        {ranking.rankings[0].prizes[0]?.faceit_points}
+                      </div>
+                    )}
+                  </th>
+                </div>
+              }
+
+              {ranking.rankings?.slice(1, 10).map((player) => {
+                return (
+                  <div className="relative border-b border-zinc-900 border-opacity-30 flex items-center p-3 shadow-inner bg-zinc-800" key={player.position + player.placement.entity_id  + entity.hub_id}>
+                    <td className="mr-4 font-play text-gray-200 text-xl font-medium">{player.position}</td>
+                    <td>
+                      <div className="flex items-center space-x-2">
+                        <div className="avatar">
+                          <div
+                            className={
+                              verifyStream(player.placement.entity_id)
+                                ? "mask mask-squircle w-8 h-8 rounded-full border-purple-500 border-2"
+                                : "mask mask-squircle w-8 h-8 rounded-full"
+                            }
+                          >
+                            <img
+                              src={player.placement.entity_avatar}
+                              alt="Player image"
+                            />
                           </div>
                         </div>
-                      </div>
-                    </div>
-                    <div className="flex justify-between">
-                      <div className="flex flex-col gap-4">
-                        {match.teams.faction1.roster.map((player) => {
-                          return (
-                            <div
-                              key={player.id}
-                              className="flex h-10 gap-2 items-center"
+                        <div>
+                          <div className="font-regular text-gray-200 font-play text-base">
+                            {player.placement.entity_name}
+                          </div>
+                          {verifyStream(player.placement.entity_id) ? (
+                            <a
+                              className="flex items-center"
+                              target="blank"
+                              href={
+                                verifyStream(player.placement.entity_id)
+                                  .stream.channel_url
+                              }
                             >
-                              <div className="avatar">
-                                <div
-                                  className={
-                                    verifyStream(player.id)
-                                      ? "w-8 h-fit rounded-full border-purple-500 border-2"
-                                      : "w-8 border-2 border-white h-fit rounded-full"
+                              <span className="flex gap-2 font-medium text-purple-500 hover:font-bold">
+                                {
+                                  verifyStream(player.placement.entity_id)
+                                    .stream.channel_name
+                                }
+                                <div className="mb-auto gap-1 text-red-500 font-medium flex items-center">
+                                  <span className="text-red-500 text-base font-bold material-symbols-outlined">
+                                    person
+                                  </span>
+                                  {
+                                    verifyStream(player.placement.entity_id)
+                                      .stream.viewers
                                   }
-                                >
-                                  <img src={player.avatar} />
                                 </div>
-                              </div>
-                              <div className="flex flex-col font-play text-gray-400 font-medium text-base">
-                                {player.nickname}
-                                {verifyStream(player.id) ? (
-                                  <a
-                                    className="flex items-center"
-                                    target="blank"
-                                    href={
-                                      verifyStream(player.id).stream.channel_url
-                                    }
-                                  >
-                                    <span className="flex gap-2 font-medium text-purple-500 hover:font-bold">
-                                      {
-                                        verifyStream(player.id).stream
-                                          .channel_name
-                                      }
-                                      <div className="mb-auto gap-1 text-red-500 font-medium flex items-center">
-                                        <span className="text-red-500 text-base font-bold material-symbols-outlined">
-                                          person
-                                        </span>
-                                        {verifyStream(player.id).stream.viewers}
-                                      </div>
-                                    </span>
-                                  </a>
-                                ) : (
-                                  ""
-                                )}
-                              </div>
-                            </div>
-                          );
-                        })}
+                              </span>
+                            </a>
+                          ) : (
+                            ""
+                          )}
+                        </div>
                       </div>
-                      <div className="flex flex-col gap-4 items-end">
-                        {match.teams.faction2.roster.map((player) => {
-                          return (
-                            <div
-                              key={player.id}
-                              className="flex p-1 h-10 gap-2 items-center"
-                            >
-                              <div className="flex flex-col font-play items-end font-medium text-gray-400 text-base">
-                                {player.nickname}
-                                {verifyStream(player.id) ? (
-                                  <a
-                                    className="flex items-center"
-                                    target="blank"
-                                    href={
-                                      verifyStream(player.id).stream.channel_url
-                                    }
-                                  >
-                                    <span className="flex gap-2 font-medium text-purple-500 hover:font-bold">
-                                      <div className="mb-auto gap-1 text-red-500 font-medium flex items-center">
-                                        {verifyStream(player.id).stream.viewers}
-                                        <span className="text-red-500 text-base font-bold material-symbols-outlined">
-                                          person
-                                        </span>
-                                      </div>
-                                      {
-                                        verifyStream(player.id).stream
-                                          .channel_name
-                                      }
-                                    </span>
-                                  </a>
-                                ) : (
-                                  ""
-                                )}
-                              </div>
-                              <div className="avatar">
-                                <div
-                                  className={
-                                    verifyStream(player.id)
-                                      ? "w-8 h-fit rounded-full border-purple-500 border-2"
-                                      : "w-8 border-2 border-white h-fit rounded-full"
-                                  }
-                                >
-                                  <img src={player.avatar} />
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </div>
+                    </td>
+                    <th className="ml-auto">
+                      {player.prizes[0]?.image_url ? (
+                        <img
+                          className="h-6 min-w-fit"
+                          src={player.prizes[0]?.image_url}
+                        ></img>
+                      ) : (
+                        <div className="font-normal">
+                          <span className="text-orange-600 font-play font-bold mr-2">
+                            F
+                          </span>
+                          {player.prizes[0]?.faceit_points}
+                        </div>
+                      )}
+                    </th>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
         <input type="checkbox" id="my-modal" className="modal-toggle" />
@@ -499,102 +369,158 @@ export default function Home() {
               ✕
             </label>
             <div>
-              <div className="text-2xl font-play font-bold mb-4 w-fit">
+              <div className="text-2xl font-play font-bold text-gray-100 mb-4 w-fit">
                 Ranking{" "}
                 <span className="ml-4 stat-desc text-lg font-medium">{` ${formatDate(
                   ranking.leaderboard?.start_date
                 )} - ${formatDate(ranking.leaderboard?.end_date)}`}</span>
               </div>
-              <div className="overflow-x-auto w-full">
-                <table className="table w-full">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th>Name</th>
-                      <th>Prize</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {ranking.rankings?.slice(0, 10).map((player) => {
-                      return (
-                        <tr key={player.position}>
-                          <td>{player.position}</td>
-                          <td>
-                            <div className="flex items-center space-x-3">
-                              <div className="avatar">
-                                <div
-                                  className={
-                                    verifyStream(player.placement.entity_id)
-                                      ? "mask mask-squircle w-8 h-8 rounded-full border-purple-500 border-2"
-                                      : "mask mask-squircle w-8 h-8 rounded-full"
-                                  }
-                                >
-                                  <img
-                                    src={player.placement.entity_avatar}
-                                    alt="Player image"
-                                  />
-                                </div>
-                              </div>
-                              <div>
-                                <div className="font-medium font-play text-sm">
-                                  {player.placement.entity_name}
-                                </div>
-                                {verifyStream(player.placement.entity_id) ? (
-                                  <a
-                                    className="flex items-center"
-                                    target="blank"
-                                    href={
-                                      verifyStream(player.placement.entity_id)
-                                        .stream.channel_url
-                                    }
-                                  >
-                                    <span className="flex gap-2 font-medium text-purple-500 hover:font-bold">
-                                      {
-                                        verifyStream(player.placement.entity_id)
-                                          .stream.channel_name
-                                      }
-                                      <div className="mb-auto gap-1 text-red-500 font-medium flex items-center">
-                                        <span className="text-red-500 text-base font-bold material-symbols-outlined">
-                                          person
-                                        </span>
-                                        {
-                                          verifyStream(
-                                            player.placement.entity_id
-                                          ).stream.viewers
-                                        }
-                                      </div>
-                                    </span>
-                                  </a>
-                                ) : (
-                                  ""
-                                )}
-                              </div>
-                            </div>
-                          </td>
-                          <th>
-                            {player.prizes[0]?.image_url ? (
-                              <img
-                                className="h-6 min-w-fit"
-                                src={
-                                  player.prizes[0]?.image_url
-                                }
-                              ></img>
-                            ) : (
-                              <div className="font-normal">
-                                <span className="text-orange-600 font-play font-bold mr-2">
-                                  F
-                                </span>
+              <div className="overflow-x-auto w-full drop-shadow-lg rounded-md">
+                {
+                  ranking.rankings && <div className="relative flex items-center p-4 bg-indigo-500" key={ranking.rankings[0].position + ranking.rankings[0].placement.entity_id  + entity.hub_id}>
+                    <td className="mr-4 font-play text-gray-200 font-semibold text-2xl">{ranking.rankings[0].position}</td>
+                    <td>
+                      <div className="flex items-center space-x-2">
+                        <div className="avatar">
+                          <div
+                            className={
+                              verifyStream(ranking.rankings[0].placement.entity_id)
+                                ? "mask mask-squircle w-8 h-8 rounded-full border-purple-500 border-2"
+                                : "mask mask-squircle w-8 h-8 rounded-full"
+                            }
+                          >
+                            <img
+                              src={ranking.rankings[0].placement.entity_avatar}
+                              alt="Player image"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <div className="font-regular text-gray-200 font-play text-lg">
+                            {ranking.rankings[0].placement.entity_name}
+                          </div>
+                          {verifyStream(ranking.rankings[0].placement.entity_id) ? (
+                            <a
+                              className="flex items-center"
+                              target="blank"
+                              href={
+                                verifyStream(ranking.rankings[0].placement.entity_id)
+                                  .stream.channel_url
+                              }
+                            >
+                              <span className="flex gap-2 font-medium text-purple-500 hover:font-bold">
                                 {
-                                  player.prizes[0]?.faceit_points
+                                  verifyStream(ranking.rankings[0].placement.entity_id)
+                                    .stream.channel_name
                                 }
-                              </div>
+                                <div className="mb-auto gap-1 text-red-500 font-medium flex items-center">
+                                  <span className="text-red-500 text-base font-bold material-symbols-outlined">
+                                    person
+                                  </span>
+                                  {
+                                    verifyStream(ranking.rankings[0].placement.entity_id)
+                                      .stream.viewers
+                                  }
+                                </div>
+                              </span>
+                            </a>
+                          ) : (
+                            ""
+                          )}
+                        </div>
+                      </div>
+                    </td>
+                    <th className="ml-auto">
+                      {ranking.rankings[0].prizes[0]?.image_url ? (
+                        <img
+                          className="h-6 min-w-fit"
+                          src={ranking.rankings[0].prizes[0]?.image_url}
+                        ></img>
+                      ) : (
+                        <div className="font-normal">
+                          <span className="text-orange-600 font-play font-bold mr-2">
+                            F
+                          </span>
+                          {ranking.rankings[0].prizes[0]?.faceit_points}
+                        </div>
+                      )}
+                    </th>
+                  </div>
+                }
+
+                {ranking.rankings?.slice(1, 10).map((player) => {
+                  return (
+                    <div className="relative border-b border-zinc-900 border-opacity-30 flex items-center p-3 shadow-inner bg-zinc-800" key={player.position + player.placement.entity_id  + entity.hub_id}>
+                      <td className="mr-4 font-play text-gray-200 text-xl font-medium">{player.position}</td>
+                      <td>
+                        <div className="flex items-center space-x-2">
+                          <div className="avatar">
+                            <div
+                              className={
+                                verifyStream(player.placement.entity_id)
+                                  ? "mask mask-squircle w-8 h-8 rounded-full border-purple-500 border-2"
+                                  : "mask mask-squircle w-8 h-8 rounded-full"
+                              }
+                            >
+                              <img
+                                src={player.placement.entity_avatar}
+                                alt="Player image"
+                              />
+                            </div>
+                          </div>
+                          <div>
+                            <div className="font-regular text-gray-200 font-play text-base">
+                              {player.placement.entity_name}
+                            </div>
+                            {verifyStream(player.placement.entity_id) ? (
+                              <a
+                                className="flex items-center"
+                                target="blank"
+                                href={
+                                  verifyStream(player.placement.entity_id)
+                                    .stream.channel_url
+                                }
+                              >
+                                <span className="flex gap-2 font-medium text-purple-500 hover:font-bold">
+                                  {
+                                    verifyStream(player.placement.entity_id)
+                                      .stream.channel_name
+                                  }
+                                  <div className="mb-auto gap-1 text-red-500 font-medium flex items-center">
+                                    <span className="text-red-500 text-base font-bold material-symbols-outlined">
+                                      person
+                                    </span>
+                                    {
+                                      verifyStream(player.placement.entity_id)
+                                        .stream.viewers
+                                    }
+                                  </div>
+                                </span>
+                              </a>
+                            ) : (
+                              ""
                             )}
-                          </th>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                          </div>
+                        </div>
+                      </td>
+                      <th className="ml-auto">
+                        {player.prizes[0]?.image_url ? (
+                          <img
+                            className="h-6 min-w-fit"
+                            src={player.prizes[0]?.image_url}
+                          ></img>
+                        ) : (
+                          <div className="font-normal">
+                            <span className="text-orange-600 font-play font-bold mr-2">
+                              F
+                            </span>
+                            {player.prizes[0]?.faceit_points}
+                          </div>
+                        )}
+                      </th>
+                    </div>
+                  );
+                })}
               </div>
             </div>
             <div className="modal-action">
@@ -622,7 +548,9 @@ export default function Home() {
         >
           <img className="h-6" src="/github.png"></img>
         </a>
-        <div className="font-base flex gap-2 h-6"><img className="h-6" src="/PIX.png"></img> jvococonrad@gmail.com</div>
+        <div className="font-base flex gap-2 h-6">
+          <img className="h-6" src="/PIX.png"></img> jvococonrad@gmail.com
+        </div>
       </footer>
     </div>
   );

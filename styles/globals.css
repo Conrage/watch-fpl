@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 @import url("https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Jost:wght@100;200;300;400;500;600;700;800;900&display=swap');
+.hub-card {
+  @apply min-w-fit flex-none min-w-fit h-32 rounded-md shadow border-4 border-gray-700 transition cursor-pointer hover:border-indigo-500 hover:border-opacity-50 active:scale-95 active:border-opacity-100
+}
 html,
 body {
   padding: 0;
@@ -30,19 +34,14 @@ html {
   background-size: 5px 5px;
 }
 body {
-  background-color: rgb(30, 34, 43);
-  color: white;
-  background-image: radial-gradient(
-    rgba(120, 125, 134, 0.2) 0.5px,
-    rgb(30, 34, 43) 0.5px
-  );
-  background-size: 5px 5px;
+  background-image: url('/bgcs2.svg');
+  background-size: cover ;
 }
 .bg-card {
   background-color: rgb(27, 30, 37);
 }
 
-@media (max-width: 641px) {
+@media (max-width: 800px) {
   * {
     font-size: 99% !important;
   }
@@ -52,6 +51,9 @@ body {
   .score {
     padding: 0.1rem 0.7rem 0.1rem 0.7rem;
     gap: 0.5rem;
+  }
+  .hub-card {
+    @apply h-24 !important
   }
 }
 @media (max-width: 450px) {
@@ -88,6 +90,8 @@ body {
     display: flex !important;
     justify-content: center;
     gap: 0 !important;
+    width: 90% !important;
+    margin: 0 auto !important;
   }
   .ranking-mobile {
     display: flex !important;
@@ -97,7 +101,8 @@ body {
   display: none;
 }
 .content {
-  display: grid;
+  display: flex;
+  width: 100%;
 }
 .card-body {
   z-index: 1;
@@ -111,7 +116,7 @@ body {
   height: 100%;
   mask-image: linear-gradient(
     to bottom,
-    rgba(42, 48, 60, 0.05) -40%,
+    rgba(42, 48, 60, 0.1) -10%,
     rgba(42, 48, 60, 0) 100%
   );
   background-size: cover;
