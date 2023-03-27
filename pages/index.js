@@ -158,7 +158,7 @@ export default function Home() {
               }`}
           ></img>
         </div>
-        <div className="flex items-center gap-2 mt-6 w-full">
+        <div className="flex flex-col lg:flex-row items-center gap-2 mt-6 w-full">
           <div className="font-play flex items-center gap-1 text-lg font-medium text-gray-200">
             Currently Matches -{" "}
             <span className="font-bold text-1xl text-indigo-500">

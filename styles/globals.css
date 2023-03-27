@@ -41,7 +41,7 @@ body {
   background-color: rgb(27, 30, 37);
 }
 
-@media (max-width: 641px) {
+@media (max-width: 800px) {
   * {
     font-size: 99% !important;
   }

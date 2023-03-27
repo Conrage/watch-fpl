@@ -71,7 +71,7 @@ export default function MatchCard({ match, streamers }) {
         </figure>
       </div>
       <div className="p-4 px-8 pb-8 card-body">
-        <div onClick={expand} className="active:scale-95 z-10 absolute right-0 left-0 bottom-4 hover:bg-indigo-500 hover:text-white hover:scale-110 transition mx-auto cursor-pointer h-8 w-8 flex justify-center items-center rounded-full border-2 text-indigo-500 border-indigo-500"><span className="material-symbols-outlined">{expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</span></div>
+        <div onClick={expand} className="active:scale-95 z-10 absolute right-0 left-0 lg:bottom-4 bottom-2 hover:bg-indigo-500 hover:text-white hover:scale-110 transition mx-auto cursor-pointer h-8 w-8 lg:h-8 lg:w-8 h-7 w-7 flex justify-center items-center rounded-full border-2 text-indigo-500 border-indigo-500"><span className="material-symbols-outlined">{expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</span></div>
         <div className="relative flex flex-col">
           <div className="scoreboard flex justify-center mb-4 w-full gap-8">
             <h2 className="w-1/2 mr-auto flex items-center font-red-hat text-2xl gap-2 text-white font-medium min-w-fit">
@@ -88,7 +88,7 @@ export default function MatchCard({ match, streamers }) {
                   ? `0${match.summaryResults?.factions?.faction1.score}`
                   : match.summaryResults?.factions?.faction1.score}
               </div>
-              <span className="h-12 w-12 rounded-full bg-gray-700 bg-opacity-50 grid font-play text-indigo-500 text-sm place-items-center">VS</span>
+              <span className="lg:h-12 lg:w-12 h-7 w-7 rounded-full bg-gray-700 bg-opacity-50 grid font-play text-indigo-500 text-sm place-items-center">VS</span>
               <div
                 className={verifyResult(
                   match.summaryResults?.factions?.faction2.score,
