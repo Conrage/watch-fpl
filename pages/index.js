@@ -38,6 +38,14 @@ export default function Home() {
       hub_id: "fd5780d5-dd2f-4479-906c-57b8e41ae9d7",
       queue_id: "5a200f62aa4cb200061616fe",
     },
+    NA: {
+      hub_id: "748cf78c-be73-4eb9-b131-21552f2f8b75",
+      queue_id: "5ec3276bf69bec00070a854b"
+    },
+    CNA: {
+      hub_id: "b6895a52-a70c-41d6-b096-7d05377720c4",
+      queue_id: "5aa05432f4ae3d0007e9e0c8"
+    },
   };
   const [streamers, setStreamers] = useState([]);
   const [queue, setQueue] = useState([]);
@@ -153,6 +161,22 @@ export default function Home() {
             onClick={() => setEntity(translateId.CEU)}
             src="/FPLEUC.png"
             className={`hub-card ${entity.hub_id == translateId.CEU.hub_id
+              ? "!scale-105 !border-opacity-100 !border-indigo-500"
+              : ""
+              }`}
+          ></img>
+          <img
+            onClick={() => setEntity(translateId.NA)}
+            src="/FPLNA.png"
+            className={`hub-card ${entity.hub_id == translateId.NA.hub_id
+              ? "!scale-105 !border-opacity-100 !border-indigo-500"
+              : ""
+              }`}
+          ></img>
+          <img
+            onClick={() => setEntity(translateId.CNA)}
+            src="/FPLNAC.png"
+            className={`hub-card ${entity.hub_id == translateId.CNA.hub_id
               ? "!scale-105 !border-opacity-100 !border-indigo-500"
               : ""
               }`}
