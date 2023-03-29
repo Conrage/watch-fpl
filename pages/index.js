@@ -94,7 +94,7 @@ export default function Home() {
   const updateStats = () => {
     getMatches();
     getStreamers();
-    getQueues();
+    // getQueues();
     getRanking();
   };
 
@@ -189,7 +189,7 @@ export default function Home() {
               {matches.length}
             </span>
           </div>
-          <div className="dropdown dropdown-hover dropdown-center">
+          {/* <div className="dropdown dropdown-hover dropdown-center">
             <label
               tabIndex="0"
               className="badge font-bold font-play badge-primary rounded-sm"
@@ -214,7 +214,7 @@ export default function Home() {
                 );
               })}
             </ul>
-          </div>
+          </div> */}
           <label htmlFor="my-modal" className="ranking-mobile btn btn-sm modal-button btn-primary rounded text-white">
             SEE RANKING
           </label>
