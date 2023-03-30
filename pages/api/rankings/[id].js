@@ -6,7 +6,7 @@ export default async function handler(req, res) {
     const resLea = await axios.get(
       `https://api.faceit.com/leaderboard/v1/leaderboard/hub/${id}/all`
     );
-    const leaderboard_id = resLea.data.payload.currentLeaderboard.leaderboardId;
+    const leaderboard_id = resLea.data.payload?.currentLeaderboard?.leaderboardId;
     const response = await axios.get(
       `https://api.faceit.com/leaderboard/v2/ranking/${leaderboard_id}?size=true&limit=15&offset=0`
     );
