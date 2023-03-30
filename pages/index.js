@@ -236,7 +236,7 @@ export default function Home() {
             </div>
             <div className="overflow-x-auto w-full drop-shadow-lg rounded-md">
               {
-                ranking.rankings && <div className="relative flex items-center p-4 bg-indigo-500" key={ranking.rankings[0].position + ranking.rankings[0].placement.entity_id  + entity.hub_id}>
+                ranking.rankings && ranking.rankings.length > 0 && <div className="relative flex items-center p-4 bg-indigo-500" key={ranking.rankings[0].position + ranking.rankings[0].placement.entity_id  + entity.hub_id}>
                   <td className="mr-4 font-play text-gray-200 font-semibold text-2xl">{ranking.rankings[0].position}</td>
                   <td>
                     <div className="flex items-center space-x-2">
@@ -401,7 +401,7 @@ export default function Home() {
               </div>
               <div className="overflow-x-auto w-full drop-shadow-lg rounded-md">
                 {
-                  ranking.rankings && <div className="relative flex items-center p-4 bg-indigo-500" key={ranking.rankings[0].position + ranking.rankings[0].placement.entity_id  + entity.hub_id}>
+                  ranking.rankings && ranking.rankings.length > 0 && <div className="relative flex items-center p-4 bg-indigo-500" key={ranking.rankings[0].position + ranking.rankings[0].placement.entity_id  + entity.hub_id}>
                     <td className="mr-4 font-play text-gray-200 font-semibold text-2xl">{ranking.rankings[0].position}</td>
                     <td>
                       <div className="flex items-center space-x-2">
