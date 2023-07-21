@@ -18,10 +18,6 @@ export default function Home() {
   };
 
   const translateId = {
-    CS2: {
-      hub_id: "e63afec5-b332-425f-943b-2f138c01c6d5",
-      queue_id: "6329ce275606951a1bd271b2",
-    },
     SA: {
       hub_id: "ef607668-a51a-4ea6-8b7b-dab07e0ab151",
       queue_id: "633f0132403c133d88b9832b",
@@ -126,14 +122,6 @@ export default function Home() {
         </h1>
         <div className="px-4 py-4 gap-4 flex w-full mt-6 overflow-x-auto">
           <img
-            onClick={() => setEntity(translateId.CS2)}
-            src="/FACEITCS2.png"
-            className={`hub-card ${entity.hub_id == translateId.CS2.hub_id
-              ? "!scale-105 !border-opacity-100 !border-indigo-500"
-              : ""
-              }`}
-          ></img>
-          <img
             onClick={() => setEntity(translateId.SA)}
             src="/FPLSA.png"
             className={`hub-card ${entity.hub_id == translateId.SA.hub_id
@@ -236,7 +224,7 @@ export default function Home() {
             </div>
             <div className="overflow-x-auto w-full drop-shadow-lg rounded-md">
               {
-                ranking.rankings && ranking.rankings.length > 0 && <div className="relative flex items-center p-4 bg-indigo-500" key={ranking.rankings[0].position + ranking.rankings[0].placement.entity_id  + entity.hub_id}>
+                ranking.rankings && ranking.rankings.length > 0 && <div className="relative flex items-center p-4 bg-indigo-500" key={ranking.rankings[0].position + ranking.rankings[0].placement.entity_id + entity.hub_id}>
                   <td className="mr-4 font-play text-gray-200 font-semibold text-2xl">{ranking.rankings[0].position}</td>
                   <td>
                     <div className="flex items-center space-x-2">
@@ -309,7 +297,7 @@ export default function Home() {
 
               {ranking.rankings?.slice(1, 10).map((player) => {
                 return (
-                  <div className="relative border-b border-zinc-900 border-opacity-30 flex items-center p-3 shadow-inner bg-zinc-800" key={player.position + player.placement.entity_id  + entity.hub_id}>
+                  <div className="relative border-b border-zinc-900 border-opacity-30 flex items-center p-3 shadow-inner bg-zinc-800" key={player.position + player.placement.entity_id + entity.hub_id}>
                     <td className="mr-4 font-play text-gray-200 text-xl font-medium">{player.position}</td>
                     <td>
                       <div className="flex items-center space-x-2">
@@ -401,7 +389,7 @@ export default function Home() {
               </div>
               <div className="overflow-x-auto w-full drop-shadow-lg rounded-md">
                 {
-                  ranking.rankings && ranking.rankings.length > 0 && <div className="relative flex items-center p-4 bg-indigo-500" key={ranking.rankings[0].position + ranking.rankings[0].placement.entity_id  + entity.hub_id}>
+                  ranking.rankings && ranking.rankings.length > 0 && <div className="relative flex items-center p-4 bg-indigo-500" key={ranking.rankings[0].position + ranking.rankings[0].placement.entity_id + entity.hub_id}>
                     <td className="mr-4 font-play text-gray-200 font-semibold text-2xl">{ranking.rankings[0].position}</td>
                     <td>
                       <div className="flex items-center space-x-2">
@@ -474,7 +462,7 @@ export default function Home() {
 
                 {ranking.rankings?.slice(1, 10).map((player) => {
                   return (
-                    <div className="relative border-b border-zinc-900 border-opacity-30 flex items-center p-3 shadow-inner bg-zinc-800" key={player.position + player.placement.entity_id  + entity.hub_id}>
+                    <div className="relative border-b border-zinc-900 border-opacity-30 flex items-center p-3 shadow-inner bg-zinc-800" key={player.position + player.placement.entity_id + entity.hub_id}>
                       <td className="mr-4 font-play text-gray-200 text-xl font-medium">{player.position}</td>
                       <td>
                         <div className="flex items-center space-x-2">
@@ -565,13 +553,22 @@ export default function Home() {
           Powered by{" "}
           <span className="ml-1 font-semibold text-blue-500">Crazynn</span>
         </a>
-        <a
-          target="blank"
-          className="font-base p-2 max-w-fit h-fit rounded-lg bg-white"
-          href="https://github.com/Conrage/watch-fpl"
-        >
-          <img className="h-6" src="/github.png"></img>
-        </a>
+        <div className="flex gap-2">
+          <a
+            target="blank"
+            className="font-base p-2 max-w-fit h-fit rounded-lg bg-white"
+            href="https://github.com/Conrage/watch-fpl"
+          >
+            <img className="h-6" src="/github.png"></img>
+          </a>
+          <a
+            target="blank"
+            className="font-base p-2 max-w-fit h-fit rounded-lg bg-white"
+            href="https://quandoafuriajoga.com.br"
+          >
+            <img className="h-6" src="https://quandoafuriajoga.com.br/logo.png"></img>
+          </a>
+        </div>
         <div className="font-base flex gap-2 h-6">
           <img className="h-6" src="/PIX.png"></img> jvococonrad@gmail.com
         </div>
