@@ -4,7 +4,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap");
 @import url('https://fonts.googleapis.com/css2?family=Jost:wght@100;200;300;400;500;600;700;800;900&display=swap');
 .hub-card {
-  @apply min-w-fit flex-none min-w-fit h-32 rounded-md shadow border-4 border-gray-700 transition cursor-pointer hover:border-indigo-500 hover:border-opacity-50 active:scale-95 active:border-opacity-100
+  @apply flex-none h-32 w-64 min-h-[8rem] max-w-[14rem] min-w-[14rem] rounded-md shadow border-4 border-gray-700 transition cursor-pointer hover:border-indigo-500 hover:border-opacity-50 active:scale-95 active:border-opacity-100
 }
 html,
 body {
